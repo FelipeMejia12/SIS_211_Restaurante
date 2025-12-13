@@ -64,8 +64,8 @@ public final class Sistema extends javax.swing.JFrame {
         this.setIconImage(img.getImage());
         this.setLocationRelativeTo(null);
         txtIdHistorialPedido.setVisible(false);
-        if (priv.getRol().equals("Asistente")) {
-            btnConfig.setEnabled(false);
+        if (priv.getRol().equals("Asistente")) { //FIXME aqui crear un metodo que verifique el rol de quien se esta logueando al sistema
+            btnConfig.setVisible(false);
             LabelVendedor.setText("Asistente");
         } else {
             LabelVendedor.setText("Administrador");
