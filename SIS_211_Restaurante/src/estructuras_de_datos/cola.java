@@ -1,6 +1,9 @@
 package estructuras_de_datos;
 
-public class cola<T>{
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class cola<T> implements Iterable<T>{
 
 	 private Nodo<T> frente; 
 	 private Nodo<T> finalCola;
@@ -57,7 +60,39 @@ public class cola<T>{
 	     return frente == null;
 	 }
 	
-	 public int obtenersize() {
+	 public int getSize() {
 	     return size;
 	 }
+	 
+	 public Iterator<T> iterator() {
+	     return new ColaIterator();
+	 }
+	 
+	 private class ColaIterator implements Iterator<T> {
+        
+        // Puntero temporal que siempre comienza en el frente de la cola
+        private Nodo<T> actual = frente; 
+
+        /**
+         * Verifica si hay más elementos para recorrer.
+         */
+        @Override
+        public boolean hasNext() {
+            return actual != null;
+        }
+
+        /**
+         * Devuelve el elemento actual y avanza el puntero.
+         */
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                // Lanza excepción si se intenta llamar a next() cuando no hay más elementos
+                throw new NoSuchElementException();
+            }
+            T dato = actual.dato;      // 1. Obtener el dato del nodo actual
+            actual = actual.siguiente; // 2. Mover el puntero al siguiente nodo
+            return dato;               // 3. Devolver el dato
+        }
+    }
 }

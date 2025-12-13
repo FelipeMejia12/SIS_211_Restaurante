@@ -43,6 +43,8 @@ public final class Sistema extends javax.swing.JFrame {
 
     pedido ped = new pedido();
     cola<pedido> colaPedidos = new cola<pedido>();
+    cola<itemPedido> colaItemPedidos = new cola<itemPedido>();
+    
 //    pedidoDB pedDao = new pedidoDB();
     itemPedido detPedido = new itemPedido();
 
@@ -1313,7 +1315,7 @@ public final class Sistema extends javax.swing.JFrame {
             pla.setPrecio(Double.parseDouble(txtPrecioPlato.getText()));
             pla.setFecha(fechaFormato);
             
-            // Estructura de datos que gestione los platos, aqui se guarda el plato registrado
+            // FIXME Estructura de datos que gestione los platos, aqui se guarda el plato registrado
             
 ////            if (plaDao.Registrar(pla)) {
 //                JOptionPane.showMessageDialog(null, "Plato Registrado");
@@ -1510,23 +1512,21 @@ public final class Sistema extends javax.swing.JFrame {
         txtMensaje.setText("" + rest.getMensaje());
     }
     	
-    //FIXME Estructura de datos con metodo que devuelva todos los pedidos realizados
+    //CHECKME revisar que pasa si colaPedidos is empty
     
     private void ListarPedidos() {
         mesa color = new mesa();
-//        List<pedido> Listar = pedDao.listarPedidos();
         modelo = (DefaultTableModel) TablePedidos.getModel();
         Object[] ob = new Object[7];
-//        for (int i = 0; i < Listar.size(); i++) {
-//            ob[0] = Listar.get(i).getId();
-//            ob[1] = Listar.get(i).getSala();
-//            ob[2] = Listar.get(i).getUsuario();
-//            ob[3] = Listar.get(i).getNum_mesa();
-//            ob[4] = Listar.get(i).getFecha();
-//            ob[5] = Listar.get(i).getTotal();
-//            ob[6] = Listar.get(i).getEstado();
-//            modelo.addRow(ob);
-//        }
+        for (pedido pedi : colaPedidos) {
+            ob[0] = pedi.getId();
+            ob[2] = pedi.getUsuario();
+            ob[3] = pedi.getNum_mesa();
+            ob[4] = pedi.getFecha();
+            ob[5] = pedi.getTotal();
+            ob[6] = pedi.getEstado();
+            modelo.addRow(ob);
+        }
         colorHeader(TablePedidos);
         TablePedidos.setDefaultRenderer(Object.class, color);
     }
@@ -1621,19 +1621,21 @@ public final class Sistema extends javax.swing.JFrame {
     }
 
     //registrar pedido
+    
+    //CHECKME verificar si esta funcionando colaPedidos
     private void RegistrarPedido() {
         int num_mesa = Integer.parseInt(txtTempNumMesa.getText());
         double monto = Totalpagar;
         ped.setNum_mesa(num_mesa);
         ped.setTotal(monto);
         ped.setUsuario(LabelVendedor.getText());
-//        pedDao.RegistrarPedido(ped);
+        colaPedidos.enqueue(ped);
     }
     	
-    //FIXME aqui falta un tipo de gestion de detalle del pedido
+    //CHECKME revisar si getSize gestiona bien el id del pedido
     
     private void detallePedido() {
-//        int id = pedDao.IdPedido();
+        int id = colaPedidos.getSize();
         for (int i = 0; i < tableMenu.getRowCount(); i++) {
             String nombre = tableMenu.getValueAt(i, 1).toString();
             int cant = Integer.parseInt(tableMenu.getValueAt(i, 2).toString());
@@ -1642,12 +1644,12 @@ public final class Sistema extends javax.swing.JFrame {
             detPedido.setCantidad(cant);
             detPedido.setPrecio(precio);
             detPedido.setComentario(tableMenu.getValueAt(i, 5).toString());
-//            detPedido.setId_pedido(id);
-//            pedDao.RegistrarDetalle(detPedido);
+            detPedido.setId_pedido(id);
+            colaItemPedidos.enqueue(detPedido);
         }
     }
 
-    //FIXME aqui una estructura de datos que gestione pedidos
+    //FIXME Aqui un metodo de busqueda basado en id_pedido (colaItemPedidos)
     
     public void verPedidoDetalle(int id_pedido) {
 //        List<itemPedido> Listar = pedDao.verPedidoDetalle(id_pedido);
