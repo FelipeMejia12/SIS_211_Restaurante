@@ -31,10 +31,11 @@ public class Login extends javax.swing.JFrame {
         //txtCorreo.setText("felipe@gmail.com");
         //txtPass.setText("felipe");
         
-        //_____________________________________
+        //_________________________________________________________
         
+        //ID, Nombre, Correo, Contraseña, Rol
         //Default: Administrador,admin@rest.com,1234,Administrador
-        //_____________________________________
+        //_________________________________________________________
         
         barra.setVisible(false);
         ImageIcon img = new ImageIcon(getClass().getResource("/Imagenes/logo.png"));
