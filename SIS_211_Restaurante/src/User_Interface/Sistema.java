@@ -3,7 +3,7 @@ package User_Interface;
 /* slDao (revisar salasDB): ya no hay salas que gestionar
  * plaDao (revisar platosDB): 1586, 1607, 1624, 1939
  * pedDao (revisar pedidoDB): 1369, 1563, 1564, 1809, 1908, 1960, 1964, 1974, 1979, 1995
- * lgDao (revisar loginDB): 1356, 1468, 1798, 1834
+ * lgDao (revisar loginDB): 1356, 1468, 1798, 1834 //ya se corrigio pero sus funciones pueden ser utiles
  */
 
 import Clases.*;
@@ -31,9 +31,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public final class Sistema extends javax.swing.JFrame {
 
-    sala sl = new sala();
+//    sala sl = new sala();
 //    salasDB slDao = new salasDB();
-    restaurante conf = new restaurante();
+    restaurante rest = new restaurante();
     Eventos event = new Eventos();
 
     plato pla = new plato();
@@ -64,15 +64,13 @@ public final class Sistema extends javax.swing.JFrame {
         this.setIconImage(img.getImage());
         this.setLocationRelativeTo(null);
         txtIdHistorialPedido.setVisible(false);
-        txtIdConfig.setVisible(false);
         if (priv.getRol().equals("Asistente")) {
 //            btnSala.setEnabled(false);
             btnConfig.setEnabled(false);
-            LabelVendedor.setText("Felipe Mejia");
+            LabelVendedor.setText("Felipe");
         } else {
             LabelVendedor.setText("Felipe Mejia");
         }
-        txtIdConfig.setVisible(false);
         txtIdHistorialPedido.setVisible(false);
         txtIdPedido.setVisible(false);
         txtIdPlato.setVisible(false);
@@ -123,10 +121,8 @@ public final class Sistema extends javax.swing.JFrame {
         tableFinalizar = new javax.swing.JTable();
         txtIdPedido = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtFechaHora = new javax.swing.JTextField();
-        txtSalaFinalizar = new javax.swing.JTextField();
         txtNumMesaFinalizar = new javax.swing.JTextField();
         btnPdfPedido = new javax.swing.JButton();
         txtIdHistorialPedido = new javax.swing.JTextField();
@@ -137,7 +133,6 @@ public final class Sistema extends javax.swing.JFrame {
         P_Datos_Empresa = new javax.swing.JPanel();
         jLabel32 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        txtIdConfig = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         txtTelefonoConfig = new javax.swing.JTextField();
@@ -146,7 +141,7 @@ public final class Sistema extends javax.swing.JFrame {
         txtMensaje = new javax.swing.JTextField();
         btnActualizarConfig = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
-        txtRucConfig = new javax.swing.JTextField();
+        txtNITConfig = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         txtNombreConfig = new javax.swing.JTextField();
         jPanel41 = new javax.swing.JPanel();
@@ -280,17 +275,17 @@ public final class Sistema extends javax.swing.JFrame {
         	gl_p_Opciones.createParallelGroup(Alignment.LEADING)
         		.addGroup(gl_p_Opciones.createSequentialGroup()
         			.addComponent(labelLogo, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-        			.addGap(18)
+        			.addGap(20)
         			.addComponent(tipo)
-        			.addGap(18)
+        			.addGap(25)
         			.addComponent(LabelVendedor)
-        			.addGap(28)
+        			.addGap(25)
         			.addComponent(btnPlatos, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-        			.addGap(119)
+        			.addGap(25)
         			.addComponent(btnVentas, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-        			.addGap(39)
+        			.addGap(25)
         			.addComponent(btnConfig, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-        			.addGap(38)
+        			.addGap(25)
         			.addComponent(btnUsuarios, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap(92, Short.MAX_VALUE))
         );
@@ -300,7 +295,7 @@ public final class Sistema extends javax.swing.JFrame {
 
         jLabel38.setFont(new java.awt.Font("Zilla Slab", 3, 48)); // NOI18N
         jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/titulo.png"))); // NOI18N
-        jLabel38.setText("Bits & Grills");
+        jLabel38.setText("Speed Grill");
         jLabel38.setFocusable(false);
         jLabel38.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         getContentPane().add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 0, 540, 90));
@@ -593,19 +588,12 @@ public final class Sistema extends javax.swing.JFrame {
         jLabel7.setText("Fecha y Hora:");
         P_Recibo.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, -1, -1));
 
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel8.setText("Sala:");
-        P_Recibo.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
-
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel9.setText("N° Mesa:");
         P_Recibo.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, -1, -1));
 
         txtFechaHora.setEditable(false);
         P_Recibo.add(txtFechaHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, 240, 30));
-
-        txtSalaFinalizar.setEditable(false);
-        P_Recibo.add(txtSalaFinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, 240, 30));
 
         txtNumMesaFinalizar.setEditable(false);
         P_Recibo.add(txtNumMesaFinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 450, 240, 30));
@@ -629,7 +617,7 @@ public final class Sistema extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Sala", "Atendido", "N° Mesa", "Fecha", "Total", "Estado"
+                "ID", "Atendido", "N° Mesa", "Fecha", "Total", "Estado"
             }
         ) {
             private static final long serialVersionUID = 1L;
@@ -679,13 +667,6 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel8.setBackground(new java.awt.Color(204, 204, 204));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txtIdConfig.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdConfigActionPerformed(evt);
-            }
-        });
-        jPanel8.add(txtIdConfig, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 410, 24, -1));
-
         jLabel30.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
         jLabel30.setText("Dirección");
         jPanel8.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
@@ -725,12 +706,12 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel8.add(btnActualizarConfig, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 405, 220, 50));
 
         jLabel27.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
-        jLabel27.setText("Nit");
+        jLabel27.setText("NIT");
         jPanel8.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
 
-        txtRucConfig.setBackground(new java.awt.Color(204, 204, 204));
-        txtRucConfig.setBorder(null);
-        jPanel8.add(txtRucConfig, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 147, 30));
+        txtNITConfig.setBackground(new java.awt.Color(204, 204, 204));
+        txtNITConfig.setBorder(null);
+        jPanel8.add(txtNITConfig, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 147, 30));
 
         jLabel28.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
         jLabel28.setText("Nombre");
@@ -1135,7 +1116,7 @@ public final class Sistema extends javax.swing.JFrame {
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
         // TODO add your handling code here:
         Opciones_de_Paneles.setSelectedIndex(4); 
-        ListarConfig();
+        DatosEmpresa();
     }//GEN-LAST:event_btnConfigActionPerformed
 
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
@@ -1154,16 +1135,15 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void btnActualizarConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarConfigActionPerformed
         // TODO add your handling code here:
-        if (!"".equals(txtRucConfig.getText()) || !"".equals(txtNombreConfig.getText()) || !"".equals(txtTelefonoConfig.getText()) || !"".equals(txtDireccionConfig.getText())) {
-            conf.setRuc(txtRucConfig.getText());
-            conf.setNombre(txtNombreConfig.getText());
-            conf.setTelefono(txtTelefonoConfig.getText());
-            conf.setDireccion(txtDireccionConfig.getText());
-            conf.setMensaje(txtMensaje.getText());
-            conf.setId(Integer.parseInt(txtIdConfig.getText()));
+        if (!"".equals(txtNITConfig.getText()) || !"".equals(txtNombreConfig.getText()) || !"".equals(txtTelefonoConfig.getText()) || !"".equals(txtDireccionConfig.getText())) {
+            rest.setNIT(txtNITConfig.getText());
+            rest.setNombre(txtNombreConfig.getText());
+            rest.setTelefono(txtTelefonoConfig.getText());
+            rest.setDireccion(txtDireccionConfig.getText());
+            rest.setMensaje(txtMensaje.getText());
 //            lgDao.ModificarDatos(conf);
             JOptionPane.showMessageDialog(null, "Datos de la empresa modificado");
-            //ListarConfig();
+            //DatosEmpresa();
         } else {
             JOptionPane.showMessageDialog(null, "Los campos estan vacios");
         }
@@ -1190,10 +1170,6 @@ public final class Sistema extends javax.swing.JFrame {
         btnFinalizar.setEnabled(false);
         txtIdHistorialPedido.setText(""+id_pedido);
     }//GEN-LAST:event_TablePedidosMouseClicked
-
-    private void txtIdConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdConfigActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdConfigActionPerformed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
         // TODO add your handling code here:
@@ -1436,7 +1412,6 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel P_Opciones;
     private javax.swing.JPanel jPanel11;
@@ -1484,7 +1459,6 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDireccionConfig;
     private javax.swing.JTextField txtFechaHora;
-    private javax.swing.JTextField txtIdConfig;
     private javax.swing.JTextField txtIdHistorialPedido;
     private javax.swing.JTextField txtIdPedido;
     private javax.swing.JTextField txtIdPlato;
@@ -1495,8 +1469,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumMesaFinalizar;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtPrecioPlato;
-    private javax.swing.JTextField txtRucConfig;
-    private javax.swing.JTextField txtSalaFinalizar;
+    private javax.swing.JTextField txtNITConfig;
     private javax.swing.JTextField txtTelefonoConfig;
     private javax.swing.JTextField txtTempNumMesa;
     // End of variables declaration//GEN-END:variables
@@ -1519,14 +1492,13 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }
 
-    public void ListarConfig() {
-//        conf = lgDao.datosEmpresa();
-        txtIdConfig.setText("" + conf.getId());
-        txtRucConfig.setText("" + conf.getRuc());
-        txtNombreConfig.setText("" + conf.getNombre());
-        txtTelefonoConfig.setText("" + conf.getTelefono());
-        txtDireccionConfig.setText("" + conf.getDireccion());
-        txtMensaje.setText("" + conf.getMensaje());
+    public void DatosEmpresa() {
+        restaurante rest = new restaurante("12348993", "Speed Grill", "73211790", "Av. 14 de Septiembre Obrajes", null);
+        txtNITConfig.setText("" + rest.getNIT());
+        txtNombreConfig.setText("" + rest.getNombre());
+        txtTelefonoConfig.setText("" + rest.getTelefono());
+        txtDireccionConfig.setText("" + rest.getDireccion());
+        txtMensaje.setText("" + rest.getMensaje());
     }
 
     private void ListarPedidos() {
@@ -1701,7 +1673,6 @@ public final class Sistema extends javax.swing.JFrame {
 //        ped = pedDao.verPedido(id_pedido);
         totalFinalizar.setText("" + ped.getTotal());
         txtFechaHora.setText("" + ped.getFecha());
-        txtSalaFinalizar.setText("" + ped.getSala());
         txtNumMesaFinalizar.setText("" + ped.getNum_mesa());
         txtIdPedido.setText("" + ped.getId());
     }

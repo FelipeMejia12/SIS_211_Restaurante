@@ -209,34 +209,7 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -269,12 +242,11 @@ public class Login extends javax.swing.JFrame {
 	    
 	    if (correo.equals(CORREO_PRUEBA) && pass.equals(PASS_PRUEBA)) {
 	        // Si las credenciales coinciden, cargamos el objeto 'l'
-	        // Esto imita el comportamiento de rs.next()
 	        l.setId(1); // ID ficticio
 	        l.setNombre("Usuario Demo");
 	        l.setCorreo(correo); // Usamos el correo ingresado
 	        l.setPass(pass);     // Usamos la contraseña ingresada
-	        l.setRol("Administrador"); // Rol ficticio
+	        l.setRol("Asistente"); // Rol ficticio
 	    }
 	    
 	    // ----------------------------------------------------------------------

@@ -1,8 +1,7 @@
 package Clases;
 
 public class restaurante {
-    private int id;
-    private String ruc;
+    private String NIT;
     private String nombre;
     private String telefono;
     private String direccion;
@@ -12,29 +11,20 @@ public class restaurante {
         
     }
 
-    public restaurante(int id, String ruc, String nombre, String telefono, String direccion, String mensaje) {
-        this.id = id;
-        this.ruc = ruc;
+    public restaurante(String NIT, String nombre, String telefono, String direccion, String mensaje) {
+        this.NIT = NIT;
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
         this.mensaje = mensaje;
     }
 
-    public int getId() {
-        return id;
+    public String getNIT() {
+        return NIT;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getRuc() {
-        return ruc;
-    }
-
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+    public void setNIT(String NIT) {
+        this.NIT = NIT;
     }
 
     public String getNombre() {
