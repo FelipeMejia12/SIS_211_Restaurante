@@ -19,23 +19,22 @@ import javax.swing.Timer;
 public class Login extends javax.swing.JFrame {
     login lg = new login();
 //    loginDB login = new loginDB();
- // Instancia de gestor de datos
     
-    private GestorUsuarios gestorUsuarios = new GestorUsuarios();
-   
     private Timer tiempo; 
     int contador;
     int segundos = 30;
+    
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
         
-//Cargar usuarios al inicio
-        gestorUsuarios.cargarUsuariosDesdeArchivo("usuarios.txt");
-        
         //txtCorreo.setText("felipe@gmail.com");
         //txtPass.setText("felipe");
         
+        //_____________________________________
+        
+        //Default: Administrador,admin@rest.com,1234,Administrador
+        //_____________________________________
         
         barra.setVisible(false);
         ImageIcon img = new ImageIcon(getClass().getResource("/Imagenes/logo.png"));
@@ -61,11 +60,11 @@ public class Login extends javax.swing.JFrame {
         String correo = txtCorreo.getText();
         String pass = String.valueOf(txtPass.getPassword());
         if (!"".equals(correo) && !"".equals(pass)) {
-//Se debe cambiar el método de login, aqui habia por base de datos, pero ahora es directo
-        	
-        	lg = gestorUsuarios.validarCredenciales(correo, pass);
-        	//lg = log(correo, pass);            
-        	if (lg != null && lg.getCorreo() != null) {
+        	login usuarioAutenticado = lg.validarCredenciales(correo, pass);
+        	           
+        	if (usuarioAutenticado != null) {
+        		lg = usuarioAutenticado; 
+                
                 barra.setVisible(true);
                 contador = -1;
                 barra.setValue(0);
@@ -73,7 +72,7 @@ public class Login extends javax.swing.JFrame {
                 tiempo = new Timer(segundos, new BarraProgreso());
                 tiempo.start();
             } else {
-                JOptionPane.showMessageDialog(null, "Correo o la Contraseña incorrecta");
+            	JOptionPane.showMessageDialog(null, "Correo o la Contraseña incorrecta");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Debe ingresar el correo y la contraseña");
@@ -88,7 +87,7 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
+    	jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
@@ -174,14 +173,14 @@ public class Login extends javax.swing.JFrame {
         barra.setBackground(new java.awt.Color(255, 255, 255));
         barra.setForeground(new java.awt.Color(0, 110, 255));
         jPanel2.add(barra, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 250, 30));
-
+        
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 430));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-      validar();
+        validar();
     }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
@@ -199,9 +198,6 @@ public class Login extends javax.swing.JFrame {
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -218,6 +214,7 @@ public class Login extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
 
 
         /* Create and display the form */
@@ -239,10 +236,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JPasswordField txtPass;
-    // End of variables declaration//GEN-END:variables
 
-    public static login log(String correo, String pass){
-	    
-	    return 1; // Devuelve el objeto 'l' (cargado o vacío si la prueba falló)
-	}
 }
