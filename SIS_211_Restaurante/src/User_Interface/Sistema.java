@@ -1281,7 +1281,7 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
     
-    //FIXME verificar que hace este boton
+    //FIXME Boton Finalizar pedido corregir estado del pedido
     
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de finalizar");
