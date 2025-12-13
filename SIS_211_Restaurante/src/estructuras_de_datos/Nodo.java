@@ -1,6 +1,6 @@
 package estructuras_de_datos;
 
-class Nodo<T> {
+public class Nodo<T> {
 	T dato;
 	Nodo<T> siguiente;
 	

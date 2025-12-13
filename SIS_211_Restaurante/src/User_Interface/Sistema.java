@@ -7,11 +7,13 @@ package User_Interface;
  */
 
 import Clases.*;
+import estructuras_de_datos.*;
 
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.lang.annotation.ElementType;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +42,7 @@ public final class Sistema extends javax.swing.JFrame {
 //    platosDB plaDao = new platosDB();
 
     pedido ped = new pedido();
+    cola<pedido> colaPedidos = new cola<pedido>();
 //    pedidoDB pedDao = new pedidoDB();
     itemPedido detPedido = new itemPedido();
 
@@ -1153,7 +1156,7 @@ public final class Sistema extends javax.swing.JFrame {
         if (txtIdHistorialPedido.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Selecciona una fila");
         } else {
-//            pedDao.pdfPedido(Integer.parseInt(txtIdHistorialPedido.getText()));
+//            pedDao.pdfPedido(Integer.parseInt(txtIdHistorialPedido.getText())); //FIXME corregir generacion de PDF con detalle de pedidos
             txtIdHistorialPedido.setText("");
         }
     }//GEN-LAST:event_btnPdfPedidoActionPerformed

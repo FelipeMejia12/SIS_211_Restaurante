@@ -1,6 +1,6 @@
 package estructuras_de_datos;
 
-class cola<T>{
+public class cola<T>{
 
 	 private Nodo<T> frente; 
 	 private Nodo<T> finalCola;
@@ -40,7 +40,6 @@ class cola<T>{
 	     frente = frente.siguiente;
 	     
 	     if (frente == null) {
-	         // Si el frente se vuelve null, la cola está vacía, el final también debe ser null.
 	         finalCola = null;
 	     }
 	     size--;
