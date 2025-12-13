@@ -33,7 +33,7 @@ public final class Sistema extends javax.swing.JFrame {
 
 //    sala sl = new sala();
 //    salasDB slDao = new salasDB();
-    restaurante rest = new restaurante();
+    restaurante rest = new restaurante("12348993", "Speed Grill", "73211790", "Av. 14 de Septiembre Obrajes", null);
     Eventos event = new Eventos();
 
     plato pla = new plato();
@@ -47,7 +47,7 @@ public final class Sistema extends javax.swing.JFrame {
     DefaultTableModel tmp = new DefaultTableModel();
 
 //    loginDB lgDao = new loginDB();
-    int total_mesas = 7;
+    int total_mesas = 10;
     
     int item;
     double Totalpagar = 0.00;
@@ -65,11 +65,10 @@ public final class Sistema extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         txtIdHistorialPedido.setVisible(false);
         if (priv.getRol().equals("Asistente")) {
-//            btnSala.setEnabled(false);
             btnConfig.setEnabled(false);
-            LabelVendedor.setText("Felipe");
+            LabelVendedor.setText("Asistente");
         } else {
-            LabelVendedor.setText("Felipe Mejia");
+            LabelVendedor.setText("Administrador");
         }
         txtIdHistorialPedido.setVisible(false);
         txtIdPedido.setVisible(false);
@@ -169,7 +168,7 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel18 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jLabel39 = new javax.swing.JLabel();
-        P_Platos_del_dia = new javax.swing.JPanel();
+        P_Platos = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         txtNombrePlato = new javax.swing.JTextField();
@@ -321,7 +320,7 @@ public final class Sistema extends javax.swing.JFrame {
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        Opciones_de_Paneles.addTab("Panel", P_Mesas);
+        Opciones_de_Paneles.addTab("Mesas", P_Mesas);
 
         jPanel24.setBorder(javax.swing.BorderFactory.createTitledBorder("Platos del Dia"));
 
@@ -528,7 +527,7 @@ public final class Sistema extends javax.swing.JFrame {
         );
         P_Pedido.setLayout(gl_p_Pedido);
 
-        Opciones_de_Paneles.addTab("Platos", P_Pedido);
+        Opciones_de_Paneles.addTab("Pedido", P_Pedido);
 
         P_Recibo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -607,7 +606,30 @@ public final class Sistema extends javax.swing.JFrame {
         P_Recibo.add(btnPdfPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 440, 110, 40));
         P_Recibo.add(txtIdHistorialPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 450, 50, -1));
 
-        Opciones_de_Paneles.addTab("Finalizar Pedido", P_Recibo);
+        Opciones_de_Paneles.addTab("Recibo", P_Recibo);
+        
+        javax.swing.GroupLayout gl_p_Platos = new javax.swing.GroupLayout(P_Platos);
+        P_Platos.setLayout(gl_p_Platos);
+        gl_p_Platos.setHorizontalGroup(
+            gl_p_Platos.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gl_p_Platos.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        gl_p_Platos.setVerticalGroup(
+            gl_p_Platos.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gl_p_Platos.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(gl_p_Platos.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        Opciones_de_Paneles.addTab("Platos", P_Platos);      
 
         P_Historial_Pedidos.setBackground(new java.awt.Color(204, 204, 204));
         P_Historial_Pedidos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -661,7 +683,7 @@ public final class Sistema extends javax.swing.JFrame {
         P_Datos_Empresa.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel32.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel32.setText("DATOS DE LA EMPRESA");
+        jLabel32.setText("DATOS DEL RESTAURANTE");
         P_Datos_Empresa.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, -1, -1));
 
         jPanel8.setBackground(new java.awt.Color(204, 204, 204));
@@ -1085,29 +1107,6 @@ public final class Sistema extends javax.swing.JFrame {
             TablePlatos.getColumnModel().getColumn(2).setMaxWidth(300);
         }
 
-        javax.swing.GroupLayout gl_p_Platos_del_dia = new javax.swing.GroupLayout(P_Platos_del_dia);
-        P_Platos_del_dia.setLayout(gl_p_Platos_del_dia);
-        gl_p_Platos_del_dia.setHorizontalGroup(
-            gl_p_Platos_del_dia.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gl_p_Platos_del_dia.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        gl_p_Platos_del_dia.setVerticalGroup(
-            gl_p_Platos_del_dia.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gl_p_Platos_del_dia.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(gl_p_Platos_del_dia.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE))
-                .addContainerGap(22, Short.MAX_VALUE))
-        );
-
-        Opciones_de_Paneles.addTab("Platos", P_Platos_del_dia);
-
         getContentPane().add(Opciones_de_Paneles, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 95, 1080, 620));
 
         pack();
@@ -1115,7 +1114,7 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
         // TODO add your handling code here:
-        Opciones_de_Paneles.setSelectedIndex(4); 
+        Opciones_de_Paneles.setSelectedIndex(5); 	//no cambiar
         DatosEmpresa();
     }//GEN-LAST:event_btnConfigActionPerformed
 
@@ -1123,14 +1122,14 @@ public final class Sistema extends javax.swing.JFrame {
         // TODO add your handling code here:
         LimpiarTable();
         ListarPedidos();
-        Opciones_de_Paneles.setSelectedIndex(3);	
+        Opciones_de_Paneles.setSelectedIndex(4);	//no cambiar	
     }//GEN-LAST:event_btnVentasActionPerformed
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         // TODO add your handling code here:
         LimpiarTable();
         ListarUsuarios();
-        Opciones_de_Paneles.setSelectedIndex(5);  
+        Opciones_de_Paneles.setSelectedIndex(6);	//no cambiar  
     }//GEN-LAST:event_btnUsuariosActionPerformed
 
     private void btnActualizarConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarConfigActionPerformed
@@ -1143,7 +1142,7 @@ public final class Sistema extends javax.swing.JFrame {
             rest.setMensaje(txtMensaje.getText());
 //            lgDao.ModificarDatos(conf);
             JOptionPane.showMessageDialog(null, "Datos de la empresa modificado");
-            //DatosEmpresa();
+            DatosEmpresa();
         } else {
             JOptionPane.showMessageDialog(null, "Los campos estan vacios");
         }
@@ -1166,7 +1165,7 @@ public final class Sistema extends javax.swing.JFrame {
         LimpiarTable();
         verPedido(id_pedido);
         verPedidoDetalle(id_pedido);
-        Opciones_de_Paneles.setSelectedIndex(4);
+        Opciones_de_Paneles.setSelectedIndex(5); 	//no cambiar
         btnFinalizar.setEnabled(false);
         txtIdHistorialPedido.setText(""+id_pedido);
     }//GEN-LAST:event_TablePedidosMouseClicked
@@ -1189,6 +1188,7 @@ public final class Sistema extends javax.swing.JFrame {
             lg.setPass(pass);
             lg.setRol(rol);
 //            lgDao.Registrar(lg);
+            //FIXME Estructura de datos para gestionar a los usuarios registrados, necesitas persistencia de los users
             JOptionPane.showMessageDialog(null, "Usuario Registrado");
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
@@ -1223,6 +1223,8 @@ public final class Sistema extends javax.swing.JFrame {
                     return;
                 }
             }
+            
+            //FIXME verificar como funciona esta lista de objetos y si se puede poner estructura de datos
             ArrayList lista = new ArrayList();
             lista.add(item);
             lista.add(id);
@@ -1278,9 +1280,10 @@ public final class Sistema extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
+    //FIXME verificar que hace este boton
+    
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        // TODO add your handling code here:
         int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de finalizar");
         if (pregunta == 0) {
 //            if (pedDao.actualizarEstado(Integer.parseInt(txtIdPedido.getText()))) {
@@ -1290,7 +1293,7 @@ public final class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     private void btnPlatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlatosActionPerformed
-        Opciones_de_Paneles.setSelectedIndex(6); 
+        Opciones_de_Paneles.setSelectedIndex(3);  //no cambiar 
         LimpiarTable();
         ListarPlatos(TablePlatos);
     }//GEN-LAST:event_btnPlatosActionPerformed
@@ -1306,6 +1309,9 @@ public final class Sistema extends javax.swing.JFrame {
             pla.setNombre(txtNombrePlato.getText());
             pla.setPrecio(Double.parseDouble(txtPrecioPlato.getText()));
             pla.setFecha(fechaFormato);
+            
+            // Estructura de datos que gestione los platos, aqui se guarda el plato registrado
+            
 ////            if (plaDao.Registrar(pla)) {
 //                JOptionPane.showMessageDialog(null, "Plato Registrado");
 //                LimpiarTable();
@@ -1327,6 +1333,7 @@ public final class Sistema extends javax.swing.JFrame {
                 pla.setNombre(txtNombrePlato.getText());
                 pla.setPrecio(Double.parseDouble(txtPrecioPlato.getText()));
                 pla.setId(Integer.parseInt(txtIdPlato.getText()));
+                //FIXME verificar como funciona este boton
 //                if (plaDao.Modificar(pla)) {
 //                    JOptionPane.showMessageDialog(null, "Plato Modificado");
 //                    LimpiarTable();
@@ -1420,7 +1427,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel P_Platos_del_dia;
+    private javax.swing.JPanel P_Platos;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel P_Pedido;
     private javax.swing.JPanel jPanel24;
@@ -1491,16 +1498,17 @@ public final class Sistema extends javax.swing.JFrame {
             tmp.removeRow(0);
         }
     }
-
+    
     public void DatosEmpresa() {
-        restaurante rest = new restaurante("12348993", "Speed Grill", "73211790", "Av. 14 de Septiembre Obrajes", null);
         txtNITConfig.setText("" + rest.getNIT());
         txtNombreConfig.setText("" + rest.getNombre());
         txtTelefonoConfig.setText("" + rest.getTelefono());
         txtDireccionConfig.setText("" + rest.getDireccion());
         txtMensaje.setText("" + rest.getMensaje());
     }
-
+    	
+    //FIXME Estructura de datos con metodo que devuelva todos los pedidos realizados
+    
     private void ListarPedidos() {
         mesa color = new mesa();
 //        List<pedido> Listar = pedDao.listarPedidos();
@@ -1527,6 +1535,7 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }
 
+    //FIXME corregir metodo listar usuarios (empleados)
     private void ListarUsuarios() {
 //        List<login> Listar = lgDao.ListarUsuarios();
         modelo = (DefaultTableModel) TableUsuarios.getModel();
@@ -1541,19 +1550,6 @@ public final class Sistema extends javax.swing.JFrame {
         colorHeader(TableUsuarios);
     }
 
-//    private void ListarSalas() {
-////        List<salas> Listar = slDao.Listar();
-//        modelo = (DefaultTableModel) tableSala.getModel();
-//        Object[] ob = new Object[3];
-////        for (int i = 0; i < Listar.size(); i++) {
-////            ob[0] = Listar.get(i).getId();
-////            ob[1] = Listar.get(i).getNombre();
-////            ob[2] = Listar.get(i).getMesas();
-////            modelo.addRow(ob);
-////        }
-//        colorHeader(tableSala);
-//    }
-
     private void colorHeader(JTable tabla) {
         tabla.setModel(modelo);
         JTableHeader header = tabla.getTableHeader();
@@ -1561,12 +1557,6 @@ public final class Sistema extends javax.swing.JFrame {
         header.setBackground(new Color(0, 110, 255));
         header.setForeground(Color.white);
     }
-
-//    private void LimpiarSala() {
-//        txtIdSala.setText("");
-//        txtNombreSala.setText("");
-//        txtMesas.setText("");
-//    }
 
     private void LimpiarPlatos() {
         txtIdPlato.setText("");
@@ -1584,7 +1574,7 @@ public final class Sistema extends javax.swing.JFrame {
             JButton boton = new JButton("MESA N°: " + i, new ImageIcon(getClass().getResource("/Imagenes/mesa.png")));
             boton.setHorizontalTextPosition(JButton.CENTER);
             boton.setVerticalTextPosition(JButton.BOTTOM);
-            int verificar = 0;  //aqui hay que añadir estructura de datos para verificar
+            int verificar = 0;  //FIXME aqui hay que añadir estructura de datos para verificar
             if (verificar > 0) {
                 boton.setBackground(new Color(255, 51, 51));
             } else {
@@ -1613,6 +1603,7 @@ public final class Sistema extends javax.swing.JFrame {
     }
 
     // platos
+    //FIXME metodo listar platos le falta estructura de datos
     private void ListarPlatos(JTable tabla) {
 //        List<platos> Listar = plaDao.Listar(txtBuscarPlato.getText(), fechaFormato);
         modelo = (DefaultTableModel) tabla.getModel();
@@ -1628,16 +1619,16 @@ public final class Sistema extends javax.swing.JFrame {
 
     //registrar pedido
     private void RegistrarPedido() {
-//        int id_sala = Integer.parseInt(txtTempIdSala.getText());
         int num_mesa = Integer.parseInt(txtTempNumMesa.getText());
         double monto = Totalpagar;
-//        ped.setId_sala(id_sala);
         ped.setNum_mesa(num_mesa);
         ped.setTotal(monto);
         ped.setUsuario(LabelVendedor.getText());
 //        pedDao.RegistrarPedido(ped);
     }
-
+    	
+    //FIXME aqui falta un tipo de gestion de detalle del pedido
+    
     private void detallePedido() {
 //        int id = pedDao.IdPedido();
         for (int i = 0; i < tableMenu.getRowCount(); i++) {
@@ -1653,6 +1644,8 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }
 
+    //FIXME aqui una estructura de datos que gestione pedidos
+    
     public void verPedidoDetalle(int id_pedido) {
 //        List<itemPedido> Listar = pedDao.verPedidoDetalle(id_pedido);
         modelo = (DefaultTableModel) tableFinalizar.getModel();
@@ -1669,6 +1662,8 @@ public final class Sistema extends javax.swing.JFrame {
         colorHeader(tableFinalizar);
     }
 
+    //FIXME Estructura de datos de pedidos para visualizar un pedido
+    
     public void verPedido(int id_pedido) {
 //        ped = pedDao.verPedido(id_pedido);
         totalFinalizar.setText("" + ped.getTotal());

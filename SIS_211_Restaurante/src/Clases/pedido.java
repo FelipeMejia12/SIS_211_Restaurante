@@ -2,7 +2,6 @@ package Clases;
 
 public class pedido {
     private int id;
-    private int id_sala;
     private int num_mesa;
     private String fecha;
     private double total;
@@ -13,9 +12,8 @@ public class pedido {
     public pedido() {
     }
 
-    public pedido(int id, int id_sala, int num_mesa, String fecha, double total, String sala, String usuario, String estado) {
+    public pedido(int id, int num_mesa, String fecha, double total, String sala, String usuario, String estado) {
         this.id = id;
-        this.id_sala = id_sala;
         this.num_mesa = num_mesa;
         this.fecha = fecha;
         this.total = total;
@@ -30,14 +28,6 @@ public class pedido {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getId_sala() {
-        return id_sala;
-    }
-
-    public void setId_sala(int id_sala) {
-        this.id_sala = id_sala;
     }
 
     public int getNum_mesa() {

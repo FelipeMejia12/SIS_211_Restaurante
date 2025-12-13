@@ -246,7 +246,7 @@ public class Login extends javax.swing.JFrame {
 	        l.setNombre("Usuario Demo");
 	        l.setCorreo(correo); // Usamos el correo ingresado
 	        l.setPass(pass);     // Usamos la contraseña ingresada
-	        l.setRol("Asistente"); // Rol ficticio
+	        l.setRol("Administrador"); // Rol ficticio
 	    }
 	    
 	    // ----------------------------------------------------------------------
