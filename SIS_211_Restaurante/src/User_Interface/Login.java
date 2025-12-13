@@ -34,7 +34,7 @@ public class Login extends javax.swing.JFrame {
         //_________________________________________________________
         
         //ID, Nombre, Correo, Contraseña, Rol
-        //Default: Administrador,admin@rest.com,1234,Administrador
+        //Default: Administrador,admin@rest.com,1234,Administrador 
         //_________________________________________________________
         
         barra.setVisible(false);

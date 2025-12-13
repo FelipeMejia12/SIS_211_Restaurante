@@ -5,19 +5,17 @@ public class pedido {
     private int num_mesa;
     private String fecha;
     private double total;
-    private String sala;
     private String usuario;
     private String estado;
 
     public pedido() {
     }
 
-    public pedido(int id, int num_mesa, String fecha, double total, String sala, String usuario, String estado) {
+    public pedido(int id, int num_mesa, String fecha, double total, String usuario, String estado) {
         this.id = id;
         this.num_mesa = num_mesa;
         this.fecha = fecha;
         this.total = total;
-        this.sala = sala;
         this.usuario = usuario;
         this.estado = estado;
     }
@@ -52,14 +50,6 @@ public class pedido {
 
     public void setTotal(double total) {
         this.total = total;
-    }
-
-    public String getSala() {
-        return sala;
-    }
-
-    public void setSala(String sala) {
-        this.sala = sala;
     }
 
     public String getUsuario() {
