@@ -19,14 +19,24 @@ import javax.swing.Timer;
 public class Login extends javax.swing.JFrame {
     login lg = new login();
 //    loginDB login = new loginDB();
-    private Timer tiempo;
+ // Instancia de gestor de datos
+    
+    private GestorUsuarios gestorUsuarios = new GestorUsuarios();
+   
+    private Timer tiempo; 
     int contador;
     int segundos = 30;
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
-        txtCorreo.setText("felipe@gmail.com");
-        txtPass.setText("felipe");
+        
+//Cargar usuarios al inicio
+        gestorUsuarios.cargarUsuariosDesdeArchivo("usuarios.txt");
+        
+        //txtCorreo.setText("felipe@gmail.com");
+        //txtPass.setText("felipe");
+        
+        
         barra.setVisible(false);
         ImageIcon img = new ImageIcon(getClass().getResource("/Imagenes/logo.png"));
         this.setIconImage(img.getImage());
@@ -50,20 +60,23 @@ public class Login extends javax.swing.JFrame {
     public void validar(){
         String correo = txtCorreo.getText();
         String pass = String.valueOf(txtPass.getPassword());
-        if (!"".equals(correo) || !"".equals(pass)) {
+        if (!"".equals(correo) && !"".equals(pass)) {
 //Se debe cambiar el método de login, aqui habia por base de datos, pero ahora es directo
         	
-        	lg = log(correo, pass);            
-            if (lg.getCorreo()!= null && lg.getPass() != null) {
+        	lg = gestorUsuarios.validarCredenciales(correo, pass);
+        	//lg = log(correo, pass);            
+        	if (lg != null && lg.getCorreo() != null) {
                 barra.setVisible(true);
                 contador = -1;
                 barra.setValue(0);
                 barra.setStringPainted(true);
                 tiempo = new Timer(segundos, new BarraProgreso());
                 tiempo.start();
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Correo o la Contraseña incorrecta");
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe ingresar el correo y la contraseña");
         }
     }
     /**
@@ -228,25 +241,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPass;
     // End of variables declaration//GEN-END:variables
 
-	public static login log(String correo, String pass){
-	    login l = new login();	    
+    public static login log(String correo, String pass){
 	    
-	    // CÓDIGO DE VALIDACIÓN FICTICIA (SIN BD)
-	    // Define tus credenciales de prueba aquí:
-	    String CORREO_PRUEBA = "felipe@gmail.com";
-	    String PASS_PRUEBA = "felipe";
-	    
-	    if (correo.equals(CORREO_PRUEBA) && pass.equals(PASS_PRUEBA)) {
-	        // Si las credenciales coinciden, cargamos el objeto 'l'
-	        l.setId(1); // ID ficticio
-	        l.setNombre("Usuario Demo");
-	        l.setCorreo(correo); // Usamos el correo ingresado
-	        l.setPass(pass);     // Usamos la contraseña ingresada
-	        l.setRol("Administrador"); // Rol ficticio
-	    }
-	    
-	    // ----------------------------------------------------------------------
-	    
-	    return l; // Devuelve el objeto 'l' (cargado o vacío si la prueba falló)
+	    return 1; // Devuelve el objeto 'l' (cargado o vacío si la prueba falló)
 	}
 }
