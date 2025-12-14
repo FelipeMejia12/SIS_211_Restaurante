@@ -9,6 +9,7 @@ package User_Interface;
 import Clases.*;
 import estructuras_de_datos.*;
 
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
@@ -44,6 +45,9 @@ public final class Sistema extends javax.swing.JFrame {
     pedido ped = new pedido();
     cola<pedido> colaPedidos = new cola<pedido>();
     cola<itemPedido> colaItemPedidos = new cola<itemPedido>();
+    // ✅ Gestor que conecta la cola y el árbol de pedidos
+    GestorPedidosEstructuras gestorPedidos = new GestorPedidosEstructuras();
+
     
 //    pedidoDB pedDao = new pedidoDB();
     itemPedido detPedido = new itemPedido();
@@ -1252,17 +1256,46 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAddPlatoActionPerformed
 
-    private void btnGenerarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPedidoActionPerformed
-        if (tableMenu.getRowCount() > 0) {
-            RegistrarPedido();
+    private void btnGenerarPedidoActionPerformed(java.awt.event.ActionEvent evt) {
+    if (tableMenu.getRowCount() > 0) {
+        try {
+            // 📅 Datos generales
+            int num_mesa = Integer.parseInt(txtTempNumMesa.getText());
+            double total = Totalpagar;
+            String usuario = LabelVendedor.getText();
+            String fecha = fechaFormato;
+            String estado = "Pendiente";
+
+            // 🧾 Crear nuevo pedido
+            pedido nuevo = new pedido();
+            nuevo.setId(gestorPedidos.generarIdPedido()); // genera ID único
+            nuevo.setNum_mesa(num_mesa);
+            nuevo.setTotal(total);
+            nuevo.setUsuario(usuario);
+            nuevo.setFecha(fecha);
+            nuevo.setEstado(estado);
+
+            // 📦 Agregar a estructuras (cola + árbol)
+            gestorPedidos.agregarPedido(nuevo);
+
+            // 🧮 Registrar detalles (opcional si usas tabla de platos)
             detallePedido();
+
+            // 🧹 Limpiar tablas y mensajes
             LimpiarTableMenu();
-            JOptionPane.showMessageDialog(null, "PEDIDO REGISTRADO");
-            Opciones_de_Paneles.setSelectedIndex(0);
-        } else {
-            JOptionPane.showMessageDialog(null, "NO HAY PRODUCTO EN LA PEDIDO");
+            JOptionPane.showMessageDialog(this, "✅ Pedido registrado correctamente");
+
+            // 🔁 Actualizar tabla
+            ListarPedidos();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "⚠️ Error al registrar pedido: " + e.getMessage());
         }
-    }//GEN-LAST:event_btnGenerarPedidoActionPerformed
+    } else {
+        JOptionPane.showMessageDialog(null, "❌ No hay productos en el pedido");
+    }
+}
+
 
     private void btnEliminarTempPlatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTempPlatoActionPerformed
         modelo = (DefaultTableModel) tableMenu.getModel();
@@ -1288,14 +1321,23 @@ public final class Sistema extends javax.swing.JFrame {
     
     //FIXME Boton Finalizar pedido corregir estado del pedido
     
-    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de finalizar");
-        if (pregunta == 0) {
-//            if (pedDao.actualizarEstado(Integer.parseInt(txtIdPedido.getText()))) {
-//                pedDao.pdfPedido(Integer.parseInt(txtIdPedido.getText()));
-//            }
-        }
-    }//GEN-LAST:event_btnFinalizarActionPerformed
+   private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    int confirm = JOptionPane.showConfirmDialog(this,
+        "¿Desea finalizar el siguiente pedido?",
+        "Confirmar acción",
+        JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        // ❌ Elimina el pedido de la cola y del árbol
+        gestorPedidos.atenderPedido();
+
+        // 🔁 Actualiza la tabla visual
+        ListarPedidos();
+
+        JOptionPane.showMessageDialog(this, "🧾 Pedido finalizado correctamente.");
+    }
+}
+
 
     private void btnPlatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlatosActionPerformed
         Opciones_de_Paneles.setSelectedIndex(3);  //no cambiar 
@@ -1514,22 +1556,26 @@ public final class Sistema extends javax.swing.JFrame {
     	
     //CHECKME revisar que pasa si colaPedidos is empty
     
-    private void ListarPedidos() {
-        mesa color = new mesa();
-        modelo = (DefaultTableModel) TablePedidos.getModel();
-        Object[] ob = new Object[7];
-        for (pedido pedi : colaPedidos) {
-            ob[0] = pedi.getId();
-            ob[2] = pedi.getUsuario();
-            ob[3] = pedi.getNum_mesa();
-            ob[4] = pedi.getFecha();
-            ob[5] = pedi.getTotal();
-            ob[6] = pedi.getEstado();
-            modelo.addRow(ob);
-        }
-        colorHeader(TablePedidos);
-        TablePedidos.setDefaultRenderer(Object.class, color);
+   private void ListarPedidos() {
+    DefaultTableModel modelo = (DefaultTableModel) TablePedidos.getModel();
+    modelo.setRowCount(0); // Limpia la tabla antes de volver a llenarla
+
+    Object[] ob = new Object[6];
+
+    // 📋 Obtenemos los pedidos actuales desde la cola del gestor
+    for (pedido p : gestorPedidos.obtenerPedidosEnCola()) {
+        ob[0] = p.getId();
+        ob[1] = p.getUsuario();
+        ob[2] = p.getNum_mesa();
+        ob[3] = p.getFecha();
+        ob[4] = p.getTotal();
+        ob[5] = p.getEstado();
+        modelo.addRow(ob);
     }
+
+    colorHeader(TablePedidos);
+}
+
 
     public void LimpiarTable() {
         for (int i = 0; i < modelo.getRowCount(); i++) {
