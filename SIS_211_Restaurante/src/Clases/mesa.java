@@ -11,7 +11,7 @@ public class mesa extends DefaultTableCellRenderer{
     public Component getTableCellRendererComponent(
             JTable jtable, Object o, boolean bln, boolean bln1, int row, int col) {
         super.getTableCellRendererComponent(jtable, o, bln, bln1, row, col);
-        switch (jtable.getValueAt(row, 6).toString()) {
+        switch (jtable.getValueAt(row, 4).toString()) {
             case "PENDIENTE" -> {
                 setBackground(new Color(255,51,51));
                 setForeground(Color.white);

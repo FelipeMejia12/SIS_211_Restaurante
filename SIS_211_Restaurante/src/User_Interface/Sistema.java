@@ -101,7 +101,7 @@ public final class Sistema extends javax.swing.JFrame {
 
         P_Opciones = new javax.swing.JPanel();
         labelLogo = new javax.swing.JLabel();
-        btnVentas = new javax.swing.JButton();
+        btnPedidos = new javax.swing.JButton();
         btnConfig = new javax.swing.JButton();
         LabelVendedor = new javax.swing.JLabel();
         tipo = new javax.swing.JLabel();
@@ -218,13 +218,13 @@ public final class Sistema extends javax.swing.JFrame {
             }
         });
 
-        btnVentas.setBackground(new Color(255, 255, 255));
-        btnVentas.setForeground(new java.awt.Color(45, 45, 45));
-        btnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pedidos.png"))); // NOI18N
-        btnVentas.setText("Pedidos");
-        btnVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnVentas.setFocusable(false);
-        btnVentas.addActionListener(new java.awt.event.ActionListener() {
+        btnPedidos.setBackground(new Color(255, 255, 255));
+        btnPedidos.setForeground(new java.awt.Color(45, 45, 45));
+        btnPedidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pedidos.png"))); // NOI18N
+        btnPedidos.setText("Pedidos");
+        btnPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnPedidos.setFocusable(false);
+        btnPedidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVentasActionPerformed(evt);
             }
@@ -274,7 +274,7 @@ public final class Sistema extends javax.swing.JFrame {
         javax.swing.GroupLayout gl_p_Opciones = new javax.swing.GroupLayout(P_Opciones);
         gl_p_Opciones.setHorizontalGroup(
         	gl_p_Opciones.createParallelGroup(Alignment.LEADING)
-        		.addComponent(btnVentas, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+        		.addComponent(btnPedidos, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
         		.addComponent(btnConfig, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
         		.addComponent(LabelVendedor, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
         		.addComponent(btnUsuarios, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
@@ -298,7 +298,7 @@ public final class Sistema extends javax.swing.JFrame {
         			.addGap(25)
         			.addComponent(btnPlatos, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
         			.addGap(25)
-        			.addComponent(btnVentas, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(btnPedidos, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
         			.addGap(25)
         			.addComponent(btnConfig, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
         			.addGap(25)
@@ -1187,7 +1187,7 @@ public final class Sistema extends javax.swing.JFrame {
         LimpiarTable();
         verPedido(id_pedido);
         verPedidoDetalle(id_pedido);
-        Opciones_de_Paneles.setSelectedIndex(5); 	//no cambiar
+        Opciones_de_Paneles.setSelectedIndex(2); 	//no cambiar
         btnFinalizar.setEnabled(false);
         txtIdHistorialPedido.setText(""+id_pedido);
     }//GEN-LAST:event_TablePedidosMouseClicked
@@ -1277,7 +1277,7 @@ public final class Sistema extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "PEDIDO REGISTRADO");
             Opciones_de_Paneles.setSelectedIndex(0);
         } else {
-            JOptionPane.showMessageDialog(null, "NO HAY PRODUCTO EN LA PEDIDO");
+            JOptionPane.showMessageDialog(null, "NO HAY PRODUCTO EN PEDIDO");
         }
     }//GEN-LAST:event_btnGenerarPedidoActionPerformed
 
@@ -1438,7 +1438,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JButton btnPdfPedido;
     private javax.swing.JButton btnPlatos;
     private javax.swing.JButton btnUsuarios;
-    private javax.swing.JButton btnVentas;
+    private javax.swing.JButton btnPedidos;
     private javax.swing.JComboBox<String> cbxRol;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel11;
@@ -1555,14 +1555,14 @@ public final class Sistema extends javax.swing.JFrame {
     private void ListarPedidos() {
         mesa color = new mesa();
         modelo = (DefaultTableModel) TablePedidos.getModel();
-        Object[] ob = new Object[7];
+        Object[] ob = new Object[6];
         for (pedido pedi : colaPedidos) {
             ob[0] = pedi.getId();
-            ob[2] = pedi.getUsuario();
-            ob[3] = pedi.getNum_mesa();
-            ob[4] = pedi.getFecha();
-            ob[5] = pedi.getTotal();
-            ob[6] = pedi.getEstado();
+            ob[1] = pedi.getUsuario();
+            ob[2] = pedi.getNum_mesa();
+            ob[3] = pedi.getFecha();
+            ob[4] = pedi.getTotal();
+            ob[5] = pedi.getEstado();
             modelo.addRow(ob);
         }
         colorHeader(TablePedidos);
@@ -1644,7 +1644,7 @@ public final class Sistema extends javax.swing.JFrame {
     }
 
     // platos
-    //FIXME metodo listar platos le falta estructura de datos
+    //CHECKME verificar el funcionamiento
     private void ListarPlatos(JTable tabla) {
         modelo = (DefaultTableModel) tabla.getModel();
         Object[] ob = new Object[3];
@@ -1661,18 +1661,23 @@ public final class Sistema extends javax.swing.JFrame {
     
     //CHECKME verificar si esta funcionando colaPedidos
     private void RegistrarPedido() {
+    	pedido pedido = new pedido();
         int num_mesa = Integer.parseInt(txtTempNumMesa.getText());
         double monto = Totalpagar;
-        ped.setNum_mesa(num_mesa);
-        ped.setTotal(monto);
-        ped.setUsuario(LabelVendedor.getText());
-        colaPedidos.enqueue(ped);
+        pedido.setId(num_mesa); //FIXME eliminar ID's?
+        pedido.setNum_mesa(num_mesa);
+        pedido.setTotal(monto);
+        pedido.setUsuario(LabelVendedor.getText());
+        pedido.setEstado("PENDIENTE");
+        pedido.setFecha(fechaFormato);
+        colaPedidos.enqueue(pedido);
     }
     	
     //CHECKME revisar si getSize gestiona bien el id del pedido
     
     private void detallePedido() {
-        int id = colaPedidos.getSize();
+        //int id = colaPedidos.getSize();
+        int id = 10;
         for (int i = 0; i < tableMenu.getRowCount(); i++) {
             String nombre = tableMenu.getValueAt(i, 1).toString();
             int cant = Integer.parseInt(tableMenu.getValueAt(i, 2).toString());
@@ -1704,7 +1709,7 @@ public final class Sistema extends javax.swing.JFrame {
         colorHeader(tableFinalizar);
     }
 
-    //FIXME Estructura de datos de pedidos para visualizar un pedido
+    //FIXME Metodo de busqueda de pedido
     
     public void verPedido(int id_pedido) {
 //        ped = pedDao.verPedido(id_pedido);
