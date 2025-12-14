@@ -40,6 +40,8 @@ public final class Sistema extends javax.swing.JFrame {
 
     plato pla = new plato();
 //    platosDB plaDao = new platosDB();
+    ListaEnlazada<plato> listaPlatos = new ListaEnlazada<>();
+    int ultimoIdPlato = 0;
 
     pedido ped = new pedido();
     cola<pedido> colaPedidos = new cola<pedido>();
@@ -62,12 +64,22 @@ public final class Sistema extends javax.swing.JFrame {
 
     public Sistema(login priv) {
         initComponents();
-        ImageIcon img = new ImageIcon(getClass().getResource("/Imagenes/logo.png"));
-        Image igmEscalada = img.getImage().getScaledInstance(labelLogo.getWidth(), labelLogo.getHeight(), Image.SCALE_SMOOTH);
-        Icon icono = new ImageIcon(igmEscalada);
-        labelLogo.setIcon(icono);
-        this.setIconImage(img.getImage());
+        this.setSize(1280, 720);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
+        ImageIcon img = new ImageIcon(getClass().getResource("/Imagenes/logo.png"));
+        // Escalar el logo a un tamaño fijo (ajusta según el diseño)
+        if (labelLogo.getWidth() > 0 && labelLogo.getHeight() > 0) {
+            Image igmEscalada = img.getImage().getScaledInstance(labelLogo.getWidth(), labelLogo.getHeight(), Image.SCALE_SMOOTH);
+            Icon icono = new ImageIcon(igmEscalada);
+            labelLogo.setIcon(icono);
+        } else {
+            // Si no tiene tamaño definido, usar tamaño fijo o la imagen original
+            Image igmEscalada = img.getImage().getScaledInstance(150, 100, Image.SCALE_SMOOTH);
+            Icon icono = new ImageIcon(igmEscalada);
+            labelLogo.setIcon(icono);
+        }
+        this.setIconImage(img.getImage());
         txtIdHistorialPedido.setVisible(false);
         if (priv.getRol().equals("Asistente")) { //FIXME aqui crear un metodo que verifique el rol de quien se esta logueando al sistema
             btnConfig.setVisible(false);
@@ -1003,6 +1015,7 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel11.add(txtPrecioPlato, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 170, 30));
 
         btnGuardarPlato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/GuardarTodo.png"))); // NOI18N
+        btnGuardarPlato.setText("Guardar");
         btnGuardarPlato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarPlatoActionPerformed(evt);
@@ -1010,15 +1023,17 @@ public final class Sistema extends javax.swing.JFrame {
         });
         jPanel11.add(btnGuardarPlato, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 110, 50));
 
-        btnEditarPlato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/logo.png"))); // NOI18N
+        btnEditarPlato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/config.png"))); // NOI18N
+        btnEditarPlato.setText("Editar");
         btnEditarPlato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarPlatoActionPerformed(evt);
             }
         });
-        jPanel11.add(btnEditarPlato, new org.netbeans.lib.awtextra.AbsoluteConstraints(167, 270, 100, 50));
+        jPanel11.add(btnEditarPlato, new org.netbeans.lib.awtextra.AbsoluteConstraints(167, 270, 110, 50));
 
         btnEliminarPlato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/eliminar.png"))); // NOI18N
+        btnEliminarPlato.setText("Eliminar");
         btnEliminarPlato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarPlatoActionPerformed(evt);
@@ -1027,12 +1042,13 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel11.add(btnEliminarPlato, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 110, 50));
 
         btnNuevoPlato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/nuevo.png"))); // NOI18N
+        btnNuevoPlato.setText("Nuevo");
         btnNuevoPlato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoPlatoActionPerformed(evt);
             }
         });
-        jPanel11.add(btnNuevoPlato, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 100, 50));
+        jPanel11.add(btnNuevoPlato, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 110, 50));
 
         jPanel31.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -1114,7 +1130,8 @@ public final class Sistema extends javax.swing.JFrame {
 
         getContentPane().add(Opciones_de_Paneles, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 95, 1080, 620));
 
-        pack();
+        setSize(1280, 720);
+        setResizable(false);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
@@ -1310,42 +1327,52 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void btnGuardarPlatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPlatoActionPerformed
         // TODO add your handling code here:
-        if (!"".equals(txtNombrePlato.getText()) || !"".equals(txtPrecioPlato.getText())) {
-            pla.setNombre(txtNombrePlato.getText());
-            pla.setPrecio(Double.parseDouble(txtPrecioPlato.getText()));
-            pla.setFecha(fechaFormato);
-            
-            // FIXME Estructura de datos que gestione los platos, aqui se guarda el plato registrado
-            
-////            if (plaDao.Registrar(pla)) {
-//                JOptionPane.showMessageDialog(null, "Plato Registrado");
-//                LimpiarTable();
-//                ListarPlatos(TablePlatos);
-//                LimpiarPlatos();
-//            }
-
+        if (!"".equals(txtNombrePlato.getText()) && !"".equals(txtPrecioPlato.getText())) {
+            try {
+                plato nuevoPlato = new plato();
+                nuevoPlato.setId(++ultimoIdPlato);
+                nuevoPlato.setNombre(txtNombrePlato.getText());
+                nuevoPlato.setPrecio(Double.parseDouble(txtPrecioPlato.getText()));
+                nuevoPlato.setFecha(fechaFormato);
+                
+                listaPlatos.agregar(nuevoPlato);
+                JOptionPane.showMessageDialog(null, "Plato Registrado");
+                LimpiarTable();
+                ListarPlatos(TablePlatos);
+                LimpiarPlatos();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El precio debe ser un número válido");
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Los campos estan vacios");
+            JOptionPane.showMessageDialog(null, "Los campos están vacíos");
         }
     }//GEN-LAST:event_btnGuardarPlatoActionPerformed
 
     private void btnEditarPlatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPlatoActionPerformed
         // TODO add your handling code here:
         if ("".equals(txtIdPlato.getText())) {
-            JOptionPane.showMessageDialog(null, "Seleecione una fila");
+            JOptionPane.showMessageDialog(null, "Seleccione una fila");
         } else {
-            if (!"".equals(txtNombrePlato.getText()) || !"".equals(txtPrecioPlato.getText())) {
-                pla.setNombre(txtNombrePlato.getText());
-                pla.setPrecio(Double.parseDouble(txtPrecioPlato.getText()));
-                pla.setId(Integer.parseInt(txtIdPlato.getText()));
-                //FIXME verificar como funciona este boton
-//                if (plaDao.Modificar(pla)) {
-//                    JOptionPane.showMessageDialog(null, "Plato Modificado");
-//                    LimpiarTable();
-//                    ListarPlatos(TablePlatos);
-//                    LimpiarPlatos();
-//                }
-
+            if (!"".equals(txtNombrePlato.getText()) && !"".equals(txtPrecioPlato.getText())) {
+                try {
+                    int id = Integer.parseInt(txtIdPlato.getText());
+                    // Buscar y modificar el plato en la lista
+                    for (plato p : listaPlatos) {
+                        if (p.getId() == id) {
+                            p.setNombre(txtNombrePlato.getText());
+                            p.setPrecio(Double.parseDouble(txtPrecioPlato.getText()));
+                            break;
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, "Plato Modificado");
+                    LimpiarTable();
+                    ListarPlatos(TablePlatos);
+                    LimpiarPlatos();
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "El precio debe ser un número válido");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Complete todos los campos");
             }
         }
     }//GEN-LAST:event_btnEditarPlatoActionPerformed
@@ -1353,10 +1380,21 @@ public final class Sistema extends javax.swing.JFrame {
     private void btnEliminarPlatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPlatoActionPerformed
         // TODO add your handling code here:
         if (!"".equals(txtIdPlato.getText())) {
-            int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de eliminar");
+            int pregunta = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar?");
             if (pregunta == 0) {
                 int id = Integer.parseInt(txtIdPlato.getText());
-//                plaDao.Eliminar(id);
+                // Eliminar de la lista enlazada
+                plato platoAEliminar = null;
+                for (plato p : listaPlatos) {
+                    if (p.getId() == id) {
+                        platoAEliminar = p;
+                        break;
+                    }
+                }
+                if (platoAEliminar != null) {
+                    listaPlatos.eliminar(platoAEliminar);
+                    JOptionPane.showMessageDialog(null, "Plato eliminado");
+                }
                 LimpiarTable();
                 LimpiarPlatos();
                 ListarPlatos(TablePlatos);
@@ -1608,15 +1646,14 @@ public final class Sistema extends javax.swing.JFrame {
     // platos
     //FIXME metodo listar platos le falta estructura de datos
     private void ListarPlatos(JTable tabla) {
-//        List<platos> Listar = plaDao.Listar(txtBuscarPlato.getText(), fechaFormato);
         modelo = (DefaultTableModel) tabla.getModel();
         Object[] ob = new Object[3];
-//        for (int i = 0; i < Listar.size(); i++) {
-//            ob[0] = Listar.get(i).getId();
-//            ob[1] = Listar.get(i).getNombre();
-//            ob[2] = Listar.get(i).getPrecio();
-//            modelo.addRow(ob);
-//        }
+        for (plato p : listaPlatos) {
+            ob[0] = p.getId();
+            ob[1] = p.getNombre();
+            ob[2] = p.getPrecio();
+            modelo.addRow(ob);
+        }
         colorHeader(tabla);
     }
 

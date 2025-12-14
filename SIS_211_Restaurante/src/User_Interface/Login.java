@@ -26,6 +26,7 @@ public class Login extends javax.swing.JFrame {
     
     public Login() {
         initComponents();
+        this.setSize(310, 430);
         this.setLocationRelativeTo(null);
         
         //txtCorreo.setText("felipe@gmail.com");
@@ -177,7 +178,8 @@ public class Login extends javax.swing.JFrame {
         
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 430));
 
-        pack();
+        setSize(310, 430);
+        setResizable(false);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed

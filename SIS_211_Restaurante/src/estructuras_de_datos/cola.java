@@ -1,16 +1,19 @@
 package estructuras_de_datos;
 
-public class cola<T>{
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-	 private Nodo<T> frente; 
-	 private Nodo<T> finalCola;
-	 private int size;
-	
-	 public cola() {
-	     this.frente = null;
-	     this.finalCola = null;
-	     this.size = 0;
-	 }
+public class cola<T> implements Iterable<T> {
+
+	private Nodo<T> frente; 
+	private Nodo<T> finalCola;
+	private int size;
+
+	public cola() {
+		this.frente = null;
+		this.finalCola = null;
+		this.size = 0;
+	}
 	
 	 /**
 	  * ENQUEUE: Añade un elemento al final de la cola
@@ -57,7 +60,34 @@ public class cola<T>{
 	     return frente == null;
 	 }
 	
-	 public int obtenersize() {
-	     return size;
-	 }
+	public int obtenersize() {
+		return size;
+	}
+
+	/**
+	 * Compatibilidad: método esperado en el código existente.
+	 */
+	public int getSize() {
+		return obtenersize();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new Iterator<T>() {
+			private Nodo<T> current = frente;
+
+			@Override
+			public boolean hasNext() {
+				return current != null;
+			}
+
+			@Override
+			public T next() {
+				if (current == null) throw new NoSuchElementException();
+				T val = current.dato;
+				current = current.siguiente;
+				return val;
+			}
+		};
+	}
 }
