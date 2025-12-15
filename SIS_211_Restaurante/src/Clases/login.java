@@ -120,7 +120,7 @@ public class login extends BSTStringNodeBase {
         if (buscarEstatico(nuevoUsuario.getCorreo()) != null) {
             return false; // El correo ya existe
         }
-        
+        renumerarIDs();
         nuevoUsuario.setId(++ultimoId); // Asignar el siguiente ID
         insertarEstatico(nuevoUsuario);
         guardarUsuariosAArchivo(ARCHIVO_USUARIOS); // Persistir los cambios
@@ -133,6 +133,7 @@ public class login extends BSTStringNodeBase {
             return false; // No existe
         }
         raizUsuarios = eliminarRecursivoEstatico(raizUsuarios, correo);
+        renumerarIDs();
         guardarUsuariosAArchivo(ARCHIVO_USUARIOS);
         return true;
     }
@@ -234,6 +235,16 @@ public class login extends BSTStringNodeBase {
             usuarios.addAll(obtenerTodosLosUsuariosEstatico(nodo.derecha));
         }
         return usuarios;
+    }
+    
+    private void renumerarIDs() {
+        
+        List<login> todos = obtenerTodosLosUsuariosEstatico(raizUsuarios);
+        int nuevoId = 1;
+        for (login u : todos) {
+            u.setId(nuevoId++);
+            ultimoId = nuevoId - 1;
+        }
     }
     
     //Getters y Setters
