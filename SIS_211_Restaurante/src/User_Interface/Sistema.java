@@ -55,12 +55,13 @@ public final class Sistema extends javax.swing.JFrame {
 
 //    loginDB lgDao = new loginDB();
     int total_mesas = 10;
+    int ultimoIdPedido = 0;
     
     int item;
     double Totalpagar = 0.00;
 
     Date fechaActual = new Date();
-    String fechaFormato = new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
+    String fechaFormato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fechaActual);
 
     public Sistema(login priv) {
         initComponents();
@@ -574,7 +575,7 @@ public final class Sistema extends javax.swing.JFrame {
 
             },
             new String [] {
-                "", "Plato", "Cant", "Precio", "SubTotal", "Comentario"
+                "Plato", "Cant", "Precio", "SubTotal", "Comentario" 
             }
         ) {
             private static final long serialVersionUID = 1L;
@@ -587,17 +588,14 @@ public final class Sistema extends javax.swing.JFrame {
             }
         });
         tableFinalizar.setRowHeight(23);
-        jScrollPane13.setViewportView(tableFinalizar);
+        jScrollPane13.setViewportView(tableFinalizar); //FIXME corregir medidas
         if (tableFinalizar.getColumnModel().getColumnCount() > 0) {
-            tableFinalizar.getColumnModel().getColumn(0).setMinWidth(30);
-            tableFinalizar.getColumnModel().getColumn(0).setPreferredWidth(30);
-            tableFinalizar.getColumnModel().getColumn(0).setMaxWidth(50);
-            tableFinalizar.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tableFinalizar.getColumnModel().getColumn(2).setMinWidth(40);
-            tableFinalizar.getColumnModel().getColumn(2).setPreferredWidth(40);
-            tableFinalizar.getColumnModel().getColumn(2).setMaxWidth(50);
-            tableFinalizar.getColumnModel().getColumn(3).setPreferredWidth(50);
-            tableFinalizar.getColumnModel().getColumn(4).setPreferredWidth(60);
+            tableFinalizar.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tableFinalizar.getColumnModel().getColumn(1).setMinWidth(40);
+            tableFinalizar.getColumnModel().getColumn(1).setPreferredWidth(40);
+            tableFinalizar.getColumnModel().getColumn(1).setMaxWidth(50);
+            tableFinalizar.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tableFinalizar.getColumnModel().getColumn(3).setPreferredWidth(60);
         }
 
         P_Recibo.add(jScrollPane13, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 13, 1030, 316));
@@ -680,13 +678,13 @@ public final class Sistema extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(TablePedidos);
         if (TablePedidos.getColumnModel().getColumnCount() > 0) {
-            TablePedidos.getColumnModel().getColumn(0).setMinWidth(80);
-            TablePedidos.getColumnModel().getColumn(0).setPreferredWidth(80);
-            TablePedidos.getColumnModel().getColumn(0).setMaxWidth(120);
-            TablePedidos.getColumnModel().getColumn(2).setPreferredWidth(60);
+            TablePedidos.getColumnModel().getColumn(0).setMinWidth(20);
+            TablePedidos.getColumnModel().getColumn(0).setPreferredWidth(40);
+            TablePedidos.getColumnModel().getColumn(0).setMaxWidth(80);
+            TablePedidos.getColumnModel().getColumn(2).setPreferredWidth(40);
             TablePedidos.getColumnModel().getColumn(3).setMinWidth(100);
-            TablePedidos.getColumnModel().getColumn(3).setPreferredWidth(100);
-            TablePedidos.getColumnModel().getColumn(3).setMaxWidth(150);
+            TablePedidos.getColumnModel().getColumn(3).setPreferredWidth(150);
+            TablePedidos.getColumnModel().getColumn(3).setMaxWidth(200);
             TablePedidos.getColumnModel().getColumn(4).setPreferredWidth(60);
         }
 
@@ -1213,22 +1211,6 @@ public final class Sistema extends javax.swing.JFrame {
         if (txtNombre.getText().equals("") || txtCorreo.getText().equals("") || txtPass.getPassword().equals("")) {
             JOptionPane.showMessageDialog(null, "Todo los campos son requeridos");
         } else {
-        	        	
-            /*login lg = new login();
-            String correo = txtCorreo.getText();
-            String pass = String.valueOf(txtPass.getPassword());
-            String nom = txtNombre.getText();
-            String rol = cbxRol.getSelectedItem().toString();
-            lg.setNombre(nom);
-            lg.setCorreo(correo);
-            lg.setPass(pass);
-            lg.setRol(rol);
-//            lgDao.Registrar(lg);
-            //FIXME Estructura de datos para gestionar a los usuarios registrados, necesitas persistencia de los users
-            JOptionPane.showMessageDialog(null, "Usuario Registrado");
-        	*/
-        	
-        	//
         	
         	login nuevoUsuario = new login();
             nuevoUsuario.setNombre(txtNombre.getText());
@@ -1236,14 +1218,14 @@ public final class Sistema extends javax.swing.JFrame {
             nuevoUsuario.setPass(String.valueOf(txtPass.getPassword()));
             nuevoUsuario.setRol(cbxRol.getSelectedItem().toString());
             
-            // Instancia temporal para acceder al método registrar (o usar un método estático si lo cambiaste)
+            // Instancia temporal para acceder al método registrar
             login gestor = new login();
             
             // Intentar registrar en el BST y Archivo
             if (gestor.registrarUsuario(nuevoUsuario)) {
                 JOptionPane.showMessageDialog(null, "Usuario Registrado Exitosamente");
                 
-                // **PASO CLAVE:** Actualizar la tabla visualmente
+                //Actualizar la tabla 
                 ListarUsuarios(); 
                 
                 // Limpiar los campos de texto
@@ -1315,7 +1297,6 @@ public final class Sistema extends javax.swing.JFrame {
                 }
             }
             
-            //FIXME verificar como funciona esta lista de objetos y si se puede poner estructura de datos
             ArrayList lista = new ArrayList();
             lista.add(item);
             lista.add(id);
@@ -1343,6 +1324,8 @@ public final class Sistema extends javax.swing.JFrame {
             RegistrarPedido();
             detallePedido();
             LimpiarTableMenu();
+            PanelMesas.removeAll();
+            panelMesas(total_mesas);
             JOptionPane.showMessageDialog(null, "PEDIDO REGISTRADO");
             Opciones_de_Paneles.setSelectedIndex(0);
         } else {
@@ -1391,11 +1374,57 @@ public final class Sistema extends javax.swing.JFrame {
     //FIXME Boton Finalizar pedido corregir estado del pedido
     
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de finalizar");
+        int pregunta = JOptionPane.showConfirmDialog(null, "¿Generar Recibo?");
         if (pregunta == 0) {
-//            if (pedDao.actualizarEstado(Integer.parseInt(txtIdPedido.getText()))) {
-//                pedDao.pdfPedido(Integer.parseInt(txtIdPedido.getText()));
-//            }
+        	// 1. Obtener el ID del pedido que se está mostrando
+            if (txtIdPedido.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay un pedido seleccionado");
+                return;
+            }
+            int idPedido = Integer.parseInt(txtIdPedido.getText());
+            
+            pedido pedidoFinalizado = null;
+            List<itemPedido> detallesParaPDF = new ArrayList<>();
+
+            // 2. BUSCAR EL PEDIDO Y CAMBIAR SU ESTADO
+            // Al cambiar a "FINALIZADO", el método verificarEstadoMesa() dejará de verlo como ocupado.
+            for (pedido p : colaPedidos) {
+                if (p.getId() == idPedido) {
+                    p.setEstado("FINALIZADO"); 
+                    pedidoFinalizado = p;
+                    break;
+                }
+            }
+
+            if (pedidoFinalizado != null) {
+                
+                // 3. RECOPILAR LOS DETALLES PARA EL PDF (Buscar en la cola de items)
+                for (itemPedido item : colaItemPedidos) {
+                    if (item.getId_pedido() == idPedido) {
+                        detallesParaPDF.add(item);
+                    }
+                }
+
+                // 4. GENERAR PDF (Usando la clase que ya tienes)
+                generarPDF.generarPDF(pedidoFinalizado, detallesParaPDF, rest);
+                
+                JOptionPane.showMessageDialog(null, "Recibo Generado Exitosamente");
+
+                // 5. LIMPIAR LA PANTALLA
+                LimpiarTable(); 
+                txtIdPedido.setText("");
+                txtFechaHora.setText("");
+                txtNumMesaFinalizar.setText("");
+                totalFinalizar.setText("00.00");
+
+                // 6. VOLVER A P_MESAS
+                Opciones_de_Paneles.setSelectedIndex(0);
+                PanelMesas.removeAll();
+                panelMesas(total_mesas); 
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Error: No se encontró el pedido en la cola.");
+            }
         }
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
@@ -1495,7 +1524,6 @@ public final class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNuevoPlatoActionPerformed
 
     private void TablePlatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablePlatosMouseClicked
-        // TODO add your handling code here:
         int fila = TablePlatos.rowAtPoint(evt.getPoint());
         txtIdPlato.setText(TablePlatos.getValueAt(fila, 0).toString());
         txtNombrePlato.setText(TablePlatos.getValueAt(fila, 1).toString());
@@ -1663,20 +1691,12 @@ public final class Sistema extends javax.swing.JFrame {
     }
 
     private void ListarUsuarios() {
-//        List<login> Listar = lgDao.ListarUsuarios();
     	List<login> lista = login.ListarUsuarios();
     	modelo = (DefaultTableModel) TableUsuarios.getModel();
      //CHECKME
     	// 3. LIMPIAR LA TABLA (Vital para que no se dupliquen datos o parezca que no hace nada)
         modelo.setRowCount(0);
         Object[] ob = new Object[4];
-//        for (int i = 0; i < Listar.size(); i++) {
-//            ob[0] = Listar.get(i).getId();
-//            ob[1] = Listar.get(i).getNombre();
-//            ob[2] = Listar.get(i).getCorreo();
-//            ob[3] = Listar.get(i).getRol();
-//            modelo.addRow(ob);
-//        }
      //CHECKME
         for (login l : lista) {
             ob[0] = l.getId();
@@ -1718,7 +1738,7 @@ public final class Sistema extends javax.swing.JFrame {
             JButton boton = new JButton("MESA N°: " + i, new ImageIcon(getClass().getResource("/Imagenes/mesa.png")));
             boton.setHorizontalTextPosition(JButton.CENTER);
             boton.setVerticalTextPosition(JButton.BOTTOM);
-            int verificar = 0;  //FIXME aqui hay que añadir estructura de datos para verificar
+            int verificar = verificarEstadoMesa(num_mesa);  //CHECKME metodo de verificacion segun numero de mesa
             if (verificar > 0) {
                 boton.setBackground(new Color(255, 51, 51));
             } else {
@@ -1745,6 +1765,22 @@ public final class Sistema extends javax.swing.JFrame {
             });
         }
     }
+    
+    /**
+     * Recorre la cola de pedidos activos para ver si la mesa tiene un pedido OCUPADO.
+     * @param numeroMesa El número de la mesa a consultar.
+     * @return El ID del pedido si está ocupada, o 0 si está libre.
+     */
+    private int verificarEstadoMesa(int numeroMesa) {
+        // Tu clase 'cola' implementa Iterable, así que podemos usar un for-each
+        for (pedido p : colaPedidos) {
+            // Verificamos si coincide el número de mesa y si el estado es OCUPADO
+            if (p.getNum_mesa() == numeroMesa && "OCUPADO".equals(p.getEstado())) {
+                return p.getId(); // Retorna el ID del pedido activo
+            }
+        }
+        return 0; // 0 significa que la mesa está libre
+    }
 
     // platos
     //CHECKME 
@@ -1770,11 +1806,12 @@ public final class Sistema extends javax.swing.JFrame {
     	pedido pedido = new pedido();
         int num_mesa = Integer.parseInt(txtTempNumMesa.getText());
         double monto = Totalpagar;
-        pedido.setId(num_mesa); //FIXME arreglar esto de los ID's
+        ultimoIdPedido++;
+        pedido.setId(ultimoIdPedido); //FIXME arreglar esto de los ID's
         pedido.setNum_mesa(num_mesa);
         pedido.setTotal(monto);
         pedido.setUsuario(LabelVendedor.getText());
-        pedido.setEstado("PENDIENTE");
+        pedido.setEstado("OCUPADO");
         pedido.setFecha(fechaFormato);
         colaPedidos.enqueue(pedido);
     }
@@ -1782,47 +1819,96 @@ public final class Sistema extends javax.swing.JFrame {
     //CHECKME revisar si getSize gestiona bien el id del pedido
     
     private void detallePedido() {
-        //int id = colaPedidos.getSize();
-        int id = 10;   //FIXME verificar esto del ID como hacer
+    	
+        int id = ultimoIdPedido;   //FIXME al liberar pedidos se actualiza el ID?
         for (int i = 0; i < tableMenu.getRowCount(); i++) {
+        	itemPedido detallePedido = new itemPedido();
             String nombre = tableMenu.getValueAt(i, 1).toString();
             int cant = Integer.parseInt(tableMenu.getValueAt(i, 2).toString());
             double precio = Double.parseDouble(tableMenu.getValueAt(i, 3).toString());
-            detPedido.setNombre(nombre);
-            detPedido.setCantidad(cant);
-            detPedido.setPrecio(precio);
-            detPedido.setComentario(tableMenu.getValueAt(i, 5).toString());
-            detPedido.setId_pedido(id);
-            colaItemPedidos.enqueue(detPedido);
+            detallePedido.setNombre(nombre);
+            detallePedido.setCantidad(cant);
+            detallePedido.setPrecio(precio);
+            detallePedido.setComentario(tableMenu.getValueAt(i, 5).toString());
+            detallePedido.setId_pedido(id);
+            colaItemPedidos.enqueue(detallePedido);
         }
     }
 
     //FIXME Aqui un metodo de busqueda basado en id_pedido (colaItemPedidos)
     
+//    public void verPedidoDetalle(int id_pedido) {
+////        List<itemPedido> Listar = pedDao.verPedidoDetalle(id_pedido);
+//        modelo = (DefaultTableModel) tableFinalizar.getModel();
+//        Object[] ob = new Object[6];
+////        for (int i = 0; i < Listar.size(); i++) {
+////            ob[0] = Listar.get(i).getId();
+////            ob[1] = Listar.get(i).getNombre();
+////            ob[2] = Listar.get(i).getCantidad();
+////            ob[3] = Listar.get(i).getPrecio();
+////            ob[4] = Listar.get(i).getCantidad() * Listar.get(i).getPrecio();
+////            ob[5] = Listar.get(i).getComentario();
+////            modelo.addRow(ob);
+////        }
+//        colorHeader(tableFinalizar);
+//    }
+    
     public void verPedidoDetalle(int id_pedido) {
-//        List<itemPedido> Listar = pedDao.verPedidoDetalle(id_pedido);
+        // 1. Limpiar la tabla antes de cargar datos nuevos
         modelo = (DefaultTableModel) tableFinalizar.getModel();
+        modelo.setRowCount(0); // Borra las filas anteriores
+        
         Object[] ob = new Object[6];
-//        for (int i = 0; i < Listar.size(); i++) {
-//            ob[0] = Listar.get(i).getId();
-//            ob[1] = Listar.get(i).getNombre();
-//            ob[2] = Listar.get(i).getCantidad();
-//            ob[3] = Listar.get(i).getPrecio();
-//            ob[4] = Listar.get(i).getCantidad() * Listar.get(i).getPrecio();
-//            ob[5] = Listar.get(i).getComentario();
-//            modelo.addRow(ob);
-//        }
+        
+        // 2. RECORRER LA COLA DE ITEMS (Detalles)
+        for (itemPedido item : colaItemPedidos) {
+            
+            // 3. FILTRAR: ¿Este ítem pertenece al pedido que estamos buscando?
+            if (item.getId_pedido() == id_pedido) {
+                
+                // Llenamos las columnas con los datos del item           
+                ob[0] = item.getNombre();
+                ob[1] = item.getCantidad();
+                ob[2] = item.getPrecio();
+                
+                // Calculamos el subtotal (Cantidad * Precio)
+                double subTotal = item.getCantidad() * item.getPrecio();
+                ob[3] = subTotal;
+                
+                ob[4] = item.getComentario();
+                
+                // Agregamos la fila a la tabla
+                modelo.addRow(ob);
+            }
+        }
+        
+        // 4. Aplicar diseño al encabezado
         colorHeader(tableFinalizar);
     }
 
-    //FIXME Metodo de busqueda de pedido
+    //CHECKME Metodo de busqueda de pedido
     
     public void verPedido(int id_pedido) {
-//        ped = pedDao.verPedido(id_pedido);
-        totalFinalizar.setText("" + ped.getTotal());
-        txtFechaHora.setText("" + ped.getFecha());
-        txtNumMesaFinalizar.setText("" + ped.getNum_mesa());
-        txtIdPedido.setText("" + ped.getId());
+    	pedido pedidoEncontrado = null;
+
+        // 1. BUSCAR EN LA COLA (Pedidos Activos)
+        for (pedido p : colaPedidos) {
+            if (p.getId() == id_pedido) {
+                pedidoEncontrado = p;
+                break; // Lo encontramos, dejamos de buscar
+            }
+        }
+        if (pedidoEncontrado != null) {
+            // Actualizamos la variable global 'ped' para que el botón Finalizar sepa cuál es
+            ped = pedidoEncontrado; 
+
+            totalFinalizar.setText(String.format("%.2f", ped.getTotal()));
+            txtFechaHora.setText(ped.getFecha());
+            txtNumMesaFinalizar.setText("" + ped.getNum_mesa());
+            txtIdPedido.setText("" + ped.getId());
+        } else {
+            System.out.println("Error: No se encontró el pedido con ID " + id_pedido);
+        }
     }
 
 }
