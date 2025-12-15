@@ -913,8 +913,22 @@ public final class Sistema extends javax.swing.JFrame {
                 btnIniciarActionPerformed(evt);
             }
         });
-        jPanel15.add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 300, 50));
+        jPanel15.add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 140, 50));
+        
+        btnEliminarUsuario = new javax.swing.JButton();
+        btnEliminarUsuario.setBackground(new java.awt.Color(204, 0, 0)); // Rojo para diferenciar
+        btnEliminarUsuario.setFont(new java.awt.Font("Times New Roman", 1, 13));
+        btnEliminarUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarUsuario.setText("Eliminar");
+        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        btnEliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarUsuarioActionPerformed(evt);
+            }
+        });
+        jPanel15.add(btnEliminarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, 140, 50));
+        
         jLabel36.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
         jLabel36.setText("Nombre:");
         jPanel15.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
@@ -1242,6 +1256,34 @@ public final class Sistema extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
+    
+    private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {
+    	int fila = TableUsuarios.getSelectedRow();
+        
+        if (fila >= 0) {
+        	String correo = TableUsuarios.getValueAt(fila, 2).toString();
+            
+            // 3. Confirmar acción
+            int pregunta = JOptionPane.showConfirmDialog(null, 
+                "¿Estás seguro de eliminar al usuario " + correo + "?", 
+                "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+                
+            if (pregunta == 0) { // 0 = SI
+                login gestor = new login();
+                
+                // 4. Llamar al método eliminarUsuario que creamos en el backend
+                if (gestor.eliminarUsuario(correo)) {
+                    JOptionPane.showMessageDialog(null, "Usuario Eliminado");
+                    ListarUsuarios(); // Refrescar la tabla
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar");
+                }
+            
+            } else {
+            JOptionPane.showMessageDialog(null, "Selecciona un usuario de la tabla");
+            }
+        }
+    }
 
     private void labelLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelLogoMouseClicked
         Opciones_de_Paneles.setSelectedIndex(0);
@@ -1550,6 +1592,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txtNITConfig;
     private javax.swing.JTextField txtTelefonoConfig;
     private javax.swing.JTextField txtTempNumMesa;
+    private javax.swing.JButton btnEliminarUsuario;
     // End of variables declaration//GEN-END:variables
 
     private void TotalPagar(JTable tabla, JLabel label) {
@@ -1690,7 +1733,7 @@ public final class Sistema extends javax.swing.JFrame {
     }
 
     // platos
-    //CHECKME verificar el funcionamiento
+    //CHECKME 
     private void ListarPlatos(JTable tabla) {
         modelo = (DefaultTableModel) tabla.getModel();
         

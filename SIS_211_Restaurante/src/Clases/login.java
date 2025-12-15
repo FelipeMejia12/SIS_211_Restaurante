@@ -1,6 +1,7 @@
 package Clases;
 
 import estructuras_de_datos.Nodo;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +127,16 @@ public class login extends BSTStringNodeBase {
         return true;
     }
     
+ // Método NUEVO para eliminar usuarios desde la UI
+    public boolean eliminarUsuario(String correo) {
+        if (buscarEstatico(correo) == null) {
+            return false; // No existe
+        }
+        raizUsuarios = eliminarRecursivoEstatico(raizUsuarios, correo);
+        guardarUsuariosAArchivo(ARCHIVO_USUARIOS);
+        return true;
+    }
+    
     /**
      * Devuelve una lista de todos los usuarios. Llamado desde User_Interface.Sistema.java
      */
@@ -178,6 +189,40 @@ public class login extends BSTStringNodeBase {
         // Si comparacion == 0, el correo ya existe, no se hace nada.
 
         return actual;
+    }
+    
+ // ELIMINAR USUARIO (Lógica BST Completa)
+    private static Nodo<login> eliminarRecursivoEstatico(Nodo<login> actual, String correo) {
+        if (actual == null) return null;
+
+        int comparacion = correo.compareTo(actual.dato.getCompareKey());
+
+        if (comparacion < 0) {
+            actual.izquierda = eliminarRecursivoEstatico(actual.izquierda, correo);
+        } else if (comparacion > 0) {
+            actual.derecha = eliminarRecursivoEstatico(actual.derecha, correo);
+        } else {
+            // Nodo encontrado
+            // Caso 1 y 2: Sin hijos o un solo hijo
+            if (actual.izquierda == null) return actual.derecha;
+            if (actual.derecha == null) return actual.izquierda;
+
+            // Caso 3: Dos hijos (Buscar sucesor)
+            login sucesor = encontrarMinimo(actual.derecha);
+            actual.dato = sucesor; // Reemplazar datos
+            // Eliminar el sucesor de la rama derecha
+            actual.derecha = eliminarRecursivoEstatico(actual.derecha, sucesor.getCompareKey());
+        }
+        return actual;
+    }
+
+    private static login encontrarMinimo(Nodo<login> nodo) {
+        login min = nodo.dato;
+        while (nodo.izquierda != null) {
+            min = nodo.izquierda.dato;
+            nodo = nodo.izquierda;
+        }
+        return min;
     }
     
     // Recorrido In-Order para obtener la lista de usuarios (Recursiva)
