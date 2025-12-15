@@ -915,7 +915,7 @@ public final class Sistema extends javax.swing.JFrame {
         jLabel37.setText("Rol:");
         jPanel15.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 90, -1));
 
-        cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Asistente" }));
+        cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Asistente", "Cocinero" }));
         jPanel15.add(cbxRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 300, 30));
 
         jPanel16.setBackground(new java.awt.Color(0, 0, 0));
@@ -1180,44 +1180,47 @@ public final class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoActionPerformed
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        if (txtNombre.getText().equals("") || txtCorreo.getText().equals("") || txtPass.getPassword().equals("")) {
-            JOptionPane.showMessageDialog(null, "Todo los campos son requeridos");
-        } else {
-            login lg = new login();
-            String correo = txtCorreo.getText();
-            String pass = String.valueOf(txtPass.getPassword());
-            String nom = txtNombre.getText();
-            String rol = cbxRol.getSelectedItem().toString();
-            lg.setNombre(nom);
-            lg.setCorreo(correo);
-            String hashedPass = HashUtils.sha256(pass);
-            lg.setPass(hashedPass);
-            lg.setRol(rol);
-            // Validate duplicate email
-            if (Login.colaUsuarios.existeCorreo(correo)) {
-                JOptionPane.showMessageDialog(null, "El correo ingresado ya existe. Use otro.");
-                return;
-            }
-            // Generate ID
-            int nextId = 1;
-            for (login u : Login.colaUsuarios.toList()) {
-                if (u.getId() >= nextId) nextId = u.getId() + 1;
-            }
-            lg.setId(nextId);
-            try {
-                // persist to file and to in-memory queue
-                Login.usuariosStorage.appendUser(lg);
-                System.out.println("Usuario guardado en archivo. Tamaño antes de insertar: " + Login.colaUsuarios.getTamano());
-                Login.colaUsuarios.insertar(lg);
-                System.out.println("Tamaño de colaUsuarios luego de insertar: " + Login.colaUsuarios.getTamano());
-                ListarUsuarios();
-                JOptionPane.showMessageDialog(null, "Usuario Registrado");
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Error al guardar usuario: " + ex.getMessage());
-            }
+        // Validate fields properly
+        if (txtNombre.getText().trim().isEmpty() || txtCorreo.getText().trim().isEmpty() || txtPass.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son requeridos");
+            return;
         }
-    }
-    //GEN-LAST:event_btnIniciarActionPerformed
+
+        String correo = txtCorreo.getText().trim();
+        if (Login.colaUsuarios.existeCorreo(correo)) {
+            JOptionPane.showMessageDialog(null, "El correo ya está registrado");
+            return;
+        }
+
+        // Build new user and hash password
+        login nuevo = new login();
+        String passPlain = String.valueOf(txtPass.getPassword());
+        nuevo.setNombre(txtNombre.getText().trim());
+        nuevo.setCorreo(correo);
+        nuevo.setPass(HashUtils.sha256(passPlain));
+        nuevo.setRol(cbxRol.getSelectedItem().toString());
+
+        // Assign next ID based on existing users
+        int nextId = 1;
+        for (login u : Login.colaUsuarios.toList()) {
+            nextId = Math.max(nextId, u.getId() + 1);
+        }
+        nuevo.setId(nextId);
+
+        // Insert into in-memory structure and persist to file
+        Login.colaUsuarios.insertar(nuevo);
+        try {
+            Login.usuariosStorage.appendUser(nuevo);
+            JOptionPane.showMessageDialog(null, "Usuario Registrado");
+            ListarUsuarios();
+            // Clear inputs
+            txtNombre.setText("");
+            txtCorreo.setText("");
+            txtPass.setText("");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar usuario: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void labelLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelLogoMouseClicked
         Opciones_de_Paneles.setSelectedIndex(0);
@@ -1560,7 +1563,7 @@ public final class Sistema extends javax.swing.JFrame {
     }
 
     //FIXME corregir metodo listar usuarios (empleados)
-    private void ListarUsuarios() {
+     private void ListarUsuarios() {
         modelo = (DefaultTableModel) TableUsuarios.getModel();
         Object[] ob = new Object[4];
         modelo.setRowCount(0);
@@ -1573,8 +1576,6 @@ public final class Sistema extends javax.swing.JFrame {
         }
         colorHeader(TableUsuarios);
     }
-
-    
     public void eliminarUsuarioPorCorreo(String correo) {
         if (Login.colaUsuarios.eliminarPorCorreo(correo)) {
             try {
@@ -1588,8 +1589,7 @@ public final class Sistema extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Usuario no encontrado");
         }
     }
-
-    public void actualizarUsuario(login actualizado) {
+     public void actualizarUsuario(login actualizado) {
         if (Login.colaUsuarios.actualizarUsuario(actualizado)) {
             try {
                 Login.usuariosStorage.saveAll(Login.colaUsuarios.toList());
@@ -1603,7 +1603,7 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }
 
-    
+
     private void colorHeader(JTable tabla) {
         tabla.setModel(modelo);
         JTableHeader header = tabla.getTableHeader();

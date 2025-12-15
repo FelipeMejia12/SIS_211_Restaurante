@@ -17,8 +17,17 @@ public class UsuariosFileStorage {
 
     public UsuariosFileStorage(String basePath) {
         this.dir = new File(basePath);
-        if (!dir.exists()) dir.mkdirs();
-        this.file = new File(dir, "usuarios.txt");
+        // Prefer 'usuario.txt' but fall back to 'usuarios.txt' if present.
+        File candidate1 = new File(dir, "usuario.txt");
+        File candidate2 = new File(dir, "usuarios.txt");
+        if (candidate1.exists()) {
+            this.file = candidate1;
+        } else if (candidate2.exists()) {
+            this.file = candidate2;
+        } else {
+            // Default to 'usuario.txt' (will be created on write)
+            this.file = candidate1;
+        }
     }
 
     public List<login> readUsers() {
@@ -28,8 +37,8 @@ public class UsuariosFileStorage {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
-                // Format: id|nombre|correo|passwordHash|rol
-                String[] parts = line.split("\\,", -1);
+                    // Format: id,nombre,correo,passwordHash,rol
+                    String[] parts = line.split(",", -1);
                 if (parts.length >= 5) {
                     try {
                         int id = Integer.parseInt(parts[0]);
@@ -52,7 +61,7 @@ public class UsuariosFileStorage {
 
     public void appendUser(login u) throws IOException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-            // id|nombre|correo|passwordHash|rol
+            // id,nombre,correo,passwordHash,rol
             String line = String.format("%d,%s,%s,%s,%s", u.getId(), u.getNombre(), u.getCorreo(), u.getPass(), u.getRol());
             bw.write(line);
             bw.newLine();
@@ -63,7 +72,7 @@ public class UsuariosFileStorage {
     public void saveAll(List<login> users) throws IOException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
             for (login u : users) {
-                String line = String.format("%d|%s|%s|%s|%s", u.getId(), u.getNombre(), u.getCorreo(), u.getPass(), u.getRol());
+                String line = String.format("%d,%s,%s,%s,%s", u.getId(), u.getNombre(), u.getCorreo(), u.getPass(), u.getRol());
                 bw.write(line);
                 bw.newLine();
             }

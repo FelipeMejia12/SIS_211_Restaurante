@@ -8,12 +8,6 @@ package User_Interface;
 
 //import db_clases.loginDB;
 import Clases.login;
-import estructuras_de_datos.ColaCircularUsuarios;
-import estructuras_de_datos.UsuariosFileStorage;
-import estructuras_de_datos.HashUtils;
-import java.io.File;
-import java.util.List;
-
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,27 +16,32 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
+//YERKO
 
-
+import estructuras_de_datos.ColaCircularUsuarios;
+import estructuras_de_datos.UsuariosFileStorage;
+import estructuras_de_datos.HashUtils;
+import java.io.File;
+import java.util.List;
 
 public class Login extends javax.swing.JFrame {
     login lg = new login();
 //    loginDB login = new loginDB();
-    
     public static ColaCircularUsuarios colaUsuarios = new ColaCircularUsuarios();
-    public static final String DEFAULT_USERS_PATH = System.getProperty("user.dir") + System.getProperty("file.separator") + "Usuarios";
+    // Fixed absolute path to project folder (use the exact folder where usuario.txt resides)
+    public static final String DEFAULT_USERS_PATH = "C:/Users/ritch/Desktop/SIS_211 RESTAURANTE/SIS_211_Restaurante/SIS_211_Restaurante";
     public static UsuariosFileStorage usuariosStorage = new UsuariosFileStorage(DEFAULT_USERS_PATH);
 //  
+
     private Timer tiempo; 
     int contador;
     int segundos = 30;
     
     public Login() {
         initComponents();
-        this.setLocationRelativeTo(null);
-
-        // Inicializamos la cola circular con usuarios fijos, al no usar BD
         cargarUsuariosIniciales();
+        
+        this.setLocationRelativeTo(null);
         
         //txtCorreo.setText("felipe@gmail.com");
         //txtPass.setText("felipe");

@@ -1,2 +1,0 @@
-1,Administrador,admin@rest.com,1234,Administrador
-2,Andrea,andrea.com,1234,Administrador

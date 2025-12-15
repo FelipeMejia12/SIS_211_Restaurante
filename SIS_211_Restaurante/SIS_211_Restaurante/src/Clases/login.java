@@ -15,7 +15,20 @@ public class login extends BSTStringNodeBase {
     //para la gestión con archivos de texto
     private static Nodo<login> raizUsuarios; 
     private static int ultimoId = 0; 
-    private static final String ARCHIVO_USUARIOS = "usuarios.txt";
+    // Resolve the users file path: prefer 'usuario.txt', otherwise 'usuarios.txt' in project root
+    private static final String ARCHIVO_USUARIOS;
+    static {
+        String base = "C:/Users/ritch/Desktop/SIS_211 RESTAURANTE/SIS_211_Restaurante/SIS_211_Restaurante";
+        java.io.File f1 = new java.io.File(base, "usuario.txt");
+        java.io.File f2 = new java.io.File(base, "usuarios.txt");
+        if (f1.exists()) {
+            ARCHIVO_USUARIOS = f1.getPath();
+        } else if (f2.exists()) {
+            ARCHIVO_USUARIOS = f2.getPath();
+        } else {
+            ARCHIVO_USUARIOS = f1.getPath(); // default
+        }
+    }
 
     public login() {
     	if (raizUsuarios == null) {
@@ -105,11 +118,13 @@ public class login extends BSTStringNodeBase {
      */
     public login validarCredenciales(String correo, String pass) {
         login encontrado = buscarEstatico(correo); // Búsqueda en BST (recursiva)
-        if (encontrado != null && encontrado.getPass().equals(pass)) {
-            return encontrado; 
-        } else {
-            return null; 
+        if (encontrado != null) {
+            // Support both plaintext and SHA-256 hashed passwords for compatibility
+            if (encontrado.getPass().equals(pass) || estructuras_de_datos.HashUtils.verifySha256(pass, encontrado.getPass())) {
+                return encontrado;
+            }
         }
+        return null;
     }
     
     /**
