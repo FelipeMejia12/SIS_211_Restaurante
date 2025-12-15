@@ -1335,7 +1335,7 @@ public final class Sistema extends javax.swing.JFrame {
             tableMenu.setModel(tmp);
             TotalPagar(tableMenu, totalMenu);
         } else {
-            JOptionPane.showMessageDialog(null, "SELECCIONA UNA FILA");
+            JOptionPane.showMessageDialog(null, "SELECCIONA UN PLATO DEL MENU");
         }
     }//GEN-LAST:event_btnAddPlatoActionPerformed
 
@@ -1352,14 +1352,30 @@ public final class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGenerarPedidoActionPerformed
 
     private void btnEliminarTempPlatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTempPlatoActionPerformed
+    	
+    	int filaSeleccionada = tableMenu.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "SELECCIONE UNA FILA PARA ELIMINAR");
+            return;
+        }
+    	
         modelo = (DefaultTableModel) tableMenu.getModel();
         modelo.removeRow(tableMenu.getSelectedRow());
         TotalPagar(tableMenu, totalMenu);
     }//GEN-LAST:event_btnEliminarTempPlatoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (txtComentario.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+        
+    	int filaSeleccionada = tableMenu.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "SELECCIONE UN ITEM DEL PEDIDO");
+            return;
+        }
+    	
+    	if (txtComentario.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "INSERTE UN COMENTARIO");
         } else {
             int id = Integer.parseInt(tableMenu.getValueAt(tableMenu.getSelectedRow(), 0).toString());
             for (int i = 0; i < tableMenu.getRowCount(); i++) {
