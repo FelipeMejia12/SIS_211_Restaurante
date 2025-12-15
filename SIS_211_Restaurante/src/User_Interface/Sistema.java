@@ -83,9 +83,12 @@ public final class Sistema extends javax.swing.JFrame {
         txtIdHistorialPedido.setVisible(false);
         if (priv.getRol().equals("Asistente")) { //FIXME aqui crear un metodo que verifique el rol de quien se esta logueando al sistema
             btnConfig.setVisible(false);
+            btnUsuarios.setVisible(false); 
             LabelVendedor.setText("Asistente");
         } else {
             LabelVendedor.setText("Administrador");
+            Opciones_de_Paneles.addTab("Datos de la Empresa", P_Datos_Empresa);
+            Opciones_de_Paneles.addTab("Usuarios", P_Usuarios);
         }
         txtIdHistorialPedido.setVisible(false);
         txtIdPedido.setVisible(false);
@@ -854,8 +857,6 @@ public final class Sistema extends javax.swing.JFrame {
 
         P_Datos_Empresa.add(jPanel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, 10));
 
-        Opciones_de_Paneles.addTab("Datos de la Empresa", P_Datos_Empresa);
-
         P_Usuarios.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         TableUsuarios.setModel(new javax.swing.table.DefaultTableModel(
@@ -1001,8 +1002,6 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel15.add(jPanel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 35));
 
         P_Usuarios.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 360, 520));
-
-        Opciones_de_Paneles.addTab("Usuarios", P_Usuarios);
 
         jPanel11.setBackground(new java.awt.Color(204, 204, 204));
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1663,7 +1662,6 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }
 
-    //FIXME corregir metodo listar usuarios (empleados)
     private void ListarUsuarios() {
 //        List<login> Listar = lgDao.ListarUsuarios();
     	List<login> lista = login.ListarUsuarios();
@@ -1772,7 +1770,7 @@ public final class Sistema extends javax.swing.JFrame {
     	pedido pedido = new pedido();
         int num_mesa = Integer.parseInt(txtTempNumMesa.getText());
         double monto = Totalpagar;
-        pedido.setId(num_mesa); //FIXME eliminar ID's?
+        pedido.setId(num_mesa); //FIXME arreglar esto de los ID's
         pedido.setNum_mesa(num_mesa);
         pedido.setTotal(monto);
         pedido.setUsuario(LabelVendedor.getText());
@@ -1785,7 +1783,7 @@ public final class Sistema extends javax.swing.JFrame {
     
     private void detallePedido() {
         //int id = colaPedidos.getSize();
-        int id = 10;
+        int id = 10;   //FIXME verificar esto del ID como hacer
         for (int i = 0; i < tableMenu.getRowCount(); i++) {
             String nombre = tableMenu.getValueAt(i, 1).toString();
             int cant = Integer.parseInt(tableMenu.getValueAt(i, 2).toString());
