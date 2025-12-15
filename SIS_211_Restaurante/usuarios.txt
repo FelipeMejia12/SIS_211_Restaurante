@@ -1,4 +1,3 @@
 1,Andrea,andrea@ucb.edu.bo,1234,Administrador
 2,Felipe,felipe@ucb.edu.bo,1234,Administrador
-4,Yerko,yerko@ucb.edu.bo,1234,Administrador
 3,Yudith,yudith@ucb.edu.bo,1234,Asistente

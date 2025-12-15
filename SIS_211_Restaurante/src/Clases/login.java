@@ -120,9 +120,22 @@ public class login extends BSTStringNodeBase {
         if (buscarEstatico(nuevoUsuario.getCorreo()) != null) {
             return false; // El correo ya existe
         }
-        renumerarIDs();
-        nuevoUsuario.setId(++ultimoId); // Asignar el siguiente ID
+        
+        List<login> actuales = ListarUsuarios();
+        int maxId = 0;
+        
+        for (login u : actuales) {
+            if (u.getId() > maxId) {
+                maxId = u.getId();
+            }
+        }
+        int siguienteId = maxId + 1;
+        
+        nuevoUsuario.setId(siguienteId); // Asignar el siguiente ID
+        ultimoId = siguienteId;
+        
         insertarEstatico(nuevoUsuario);
+        //renumerarIDs();
         guardarUsuariosAArchivo(ARCHIVO_USUARIOS); // Persistir los cambios
         return true;
     }
@@ -142,10 +155,51 @@ public class login extends BSTStringNodeBase {
      * Devuelve una lista de todos los usuarios. Llamado desde User_Interface.Sistema.java
      */
     public static List<login> ListarUsuarios() {
-        return obtenerTodosLosUsuariosEstatico(raizUsuarios);
+    	List<login> lista = obtenerTodosLosUsuariosEstatico(raizUsuarios);
+        
+        // Aplicamos el algoritmo de ordenamiento QuickSort por ID
+        if (lista.size() > 1) {
+            quickSort(lista, 0, lista.size() - 1);
+        }
+        
+        return lista;
+    }
+    
+    // ------------------------------------
+    // ALGORITMO DE ORDENAMIENTO (QuickSort)
+    // ------------------------------------
+    
+    private static void quickSort(List<login> lista, int bajo, int alto) {
+        if (bajo < alto) {
+            int pi = partition(lista, bajo, alto);
+            quickSort(lista, bajo, pi - 1);
+            quickSort(lista, pi + 1, alto);
+        }
     }
 
-
+    private static int partition(List<login> lista, int bajo, int alto) {
+        int pivote = lista.get(alto).getId(); // Pivote es el ID
+        int i = (bajo - 1);
+        
+        for (int j = bajo; j < alto; j++) {
+            // Si el ID actual es menor que el pivote
+            if (lista.get(j).getId() < pivote) {
+                i++;
+                // Intercambiar lista[i] y lista[j]
+                login temp = lista.get(i);
+                lista.set(i, lista.get(j));
+                lista.set(j, temp);
+            }
+        }
+        
+        // Intercambiar lista[i+1] y lista[alto] (o pivote)
+        login temp = lista.get(i + 1);
+        lista.set(i + 1, lista.get(alto));
+        lista.set(alto, temp);
+        
+        return i + 1;
+    }
+    
     // ------------------------------------
     // MÉTODOS DEL BST (Implementación de Recursividad)
     // ------------------------------------
@@ -239,12 +293,17 @@ public class login extends BSTStringNodeBase {
     
     private void renumerarIDs() {
         
-        List<login> todos = obtenerTodosLosUsuariosEstatico(raizUsuarios);
+    	List<login> todos = obtenerTodosLosUsuariosEstatico(raizUsuarios);
+    	if (todos.size() > 1) {
+            quickSort(todos, 0, todos.size() - 1);
+        }
+        
+        // 3. Reasignar IDs
         int nuevoId = 1;
         for (login u : todos) {
             u.setId(nuevoId++);
-            ultimoId = nuevoId - 1;
         }
+        ultimoId = nuevoId - 1;
     }
     
     //Getters y Setters
