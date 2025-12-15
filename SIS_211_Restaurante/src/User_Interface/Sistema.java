@@ -1200,7 +1200,8 @@ public final class Sistema extends javax.swing.JFrame {
         if (txtNombre.getText().equals("") || txtCorreo.getText().equals("") || txtPass.getPassword().equals("")) {
             JOptionPane.showMessageDialog(null, "Todo los campos son requeridos");
         } else {
-            login lg = new login();
+        	        	
+            /*login lg = new login();
             String correo = txtCorreo.getText();
             String pass = String.valueOf(txtPass.getPassword());
             String nom = txtNombre.getText();
@@ -1212,6 +1213,33 @@ public final class Sistema extends javax.swing.JFrame {
 //            lgDao.Registrar(lg);
             //FIXME Estructura de datos para gestionar a los usuarios registrados, necesitas persistencia de los users
             JOptionPane.showMessageDialog(null, "Usuario Registrado");
+        	*/
+        	
+        	//
+        	
+        	login nuevoUsuario = new login();
+            nuevoUsuario.setNombre(txtNombre.getText());
+            nuevoUsuario.setCorreo(txtCorreo.getText());
+            nuevoUsuario.setPass(String.valueOf(txtPass.getPassword()));
+            nuevoUsuario.setRol(cbxRol.getSelectedItem().toString());
+            
+            // Instancia temporal para acceder al método registrar (o usar un método estático si lo cambiaste)
+            login gestor = new login();
+            
+            // Intentar registrar en el BST y Archivo
+            if (gestor.registrarUsuario(nuevoUsuario)) {
+                JOptionPane.showMessageDialog(null, "Usuario Registrado Exitosamente");
+                
+                // **PASO CLAVE:** Actualizar la tabla visualmente
+                ListarUsuarios(); 
+                
+                // Limpiar los campos de texto
+                txtNombre.setText("");
+                txtCorreo.setText("");
+                txtPass.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error: El correo ya existe.");
+            }
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
 
@@ -1579,7 +1607,11 @@ public final class Sistema extends javax.swing.JFrame {
     //FIXME corregir metodo listar usuarios (empleados)
     private void ListarUsuarios() {
 //        List<login> Listar = lgDao.ListarUsuarios();
-        modelo = (DefaultTableModel) TableUsuarios.getModel();
+    	List<login> lista = login.ListarUsuarios();
+    	modelo = (DefaultTableModel) TableUsuarios.getModel();
+     //CHECKME
+    	// 3. LIMPIAR LA TABLA (Vital para que no se dupliquen datos o parezca que no hace nada)
+        modelo.setRowCount(0);
         Object[] ob = new Object[4];
 //        for (int i = 0; i < Listar.size(); i++) {
 //            ob[0] = Listar.get(i).getId();
@@ -1588,15 +1620,29 @@ public final class Sistema extends javax.swing.JFrame {
 //            ob[3] = Listar.get(i).getRol();
 //            modelo.addRow(ob);
 //        }
+     //CHECKME
+        for (login l : lista) {
+            ob[0] = l.getId();
+            ob[1] = l.getNombre();
+            ob[2] = l.getCorreo();
+            ob[3] = l.getRol();
+            modelo.addRow(ob);
+        }
+     // 5. Asignar el modelo y dar color
+        TableUsuarios.setModel(modelo);
         colorHeader(TableUsuarios);
     }
 
+    //CHECKME
     private void colorHeader(JTable tabla) {
-        tabla.setModel(modelo);
+    	
+        //tabla.setModel(modelo);
         JTableHeader header = tabla.getTableHeader();
         header.setOpaque(false);
-        header.setBackground(new Color(0, 110, 255));
+        //header.setBackground(new Color(0, 110, 255));
+        header.setBackground(new Color(0, 0, 0));
         header.setForeground(Color.white);
+        header.setFont(new java.awt.Font("Tahoma", 1, 14)); // Hacer la letra más grande y negrita ayuda
     }
 
     private void LimpiarPlatos() {
@@ -1647,6 +1693,9 @@ public final class Sistema extends javax.swing.JFrame {
     //CHECKME verificar el funcionamiento
     private void ListarPlatos(JTable tabla) {
         modelo = (DefaultTableModel) tabla.getModel();
+        
+        modelo.setRowCount(0); // Limpiar tabla antes de pintar
+        
         Object[] ob = new Object[3];
         for (plato p : listaPlatos) {
             ob[0] = p.getId();

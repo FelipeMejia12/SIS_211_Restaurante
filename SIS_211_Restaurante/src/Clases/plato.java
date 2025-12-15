@@ -46,5 +46,9 @@ public class plato {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
-    }    
+    }  
+    @Override
+    public String toString() {
+        return nombre + " - " + precio + " Bs.";
+    }
 }

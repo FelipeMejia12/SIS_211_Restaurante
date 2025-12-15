@@ -1,5 +1,6 @@
 package User_Interface;
 
+
 /*
  * Revisar líneas 21, 56
  * 
@@ -7,6 +8,7 @@ package User_Interface;
  */
 
 //import db_clases.loginDB;
+
 import Clases.login;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
